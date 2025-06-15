@@ -57,7 +57,20 @@
         .options li { margin: 10px 0; }
         .options label { display: block; padding: 10px; background-color: #ecf0f1; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
         .options label:hover { background-color: #d6eaf8; }
-        .options input[type="radio"] { margin-right: 10px; }
+        
+        /* --- *** THE DEFINITIVE FIX *** --- */
+        /* This rule targets <pre> blocks inside option labels. */
+        /* The !important flag forces these styles to apply, overriding any conflicts. */
+        .options label pre {
+            background-color: #f8f9fa !important; /* A light background */
+            color: #212529 !important;             /* A dark text color */
+            border: 1px solid #dee2e6 !important;  /* A subtle border */
+            margin-top: 8px;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .options input[type="radio"] { margin-right: 10px; vertical-align: middle; }
         code { font-family: 'Courier New', Courier, monospace; background-color: #e0e0e0; padding: 2px 4px; border-radius: 3px; }
         #submit-btn, #start-quiz-btn { display: block; width: 100%; padding: 15px; font-size: 1.2em; font-weight: bold; color: #fff; background-color: #3498db; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
         #submit-btn:hover, #start-quiz-btn:hover { background-color: #2980b9; }
@@ -102,27 +115,106 @@
 
         <!-- Quiz Container -->
         <div class="container view" id="quiz-container" style="display: none;">
-            <h1>Java Fundamentals Quiz</h1>
+            <h1>Java Loops Quiz</h1>
             <form id="quiz-form">
-                <!-- Topic 1 -->
-                <h2>Topic 1: Input, Output, Variables, & Data Types</h2>
-                <div class="question-block" data-question-id="q1"><h4>Question 1: What will be the output of the following Java code snippet?</h4><pre><code>System.out.println(10 + 5 + " is the result, not " + 10 + 5);</code></pre><ul class="options"><li><label><input type="radio" name="q1" value="a"> a) 15 is the result, not 15</label></li><li><label><input type="radio" name="q1" value="b"> b) 15 is the result, not 105</label></li><li><label><input type="radio" name="q1" value="c"> c) 105 is the result, not 105</label></li><li><label><input type="radio" name="q1" value="d"> d) A compilation error.</label></li></ul></div>
-                <div class="question-block" data-question-id="q2"><h4>Question 2: What is the final value of <code>myInt</code>?</h4><pre><code>double myDouble = 9.99d; int myInt = (int) myDouble;</code></pre><ul class="options"><li><label><input type="radio" name="q2" value="a"> a) 9</label></li><li><label><input type="radio" name="q2" value="b"> b) 10</label></li><li><label><input type="radio" name="q2" value="c"> c) 9.99</label></li><li><label><input type="radio" name="q2" value="d"> d) A RuntimeException.</label></li></ul></div>
-                <div class="question-block" data-question-id="q3"><h4>Question 3: If a user inputs 25 then "John Doe", what is stored in <code>name</code>?</h4><pre><code>int age = scanner.nextInt(); String name = scanner.nextLine();</code></pre><ul class="options"><li><label><input type="radio" name="q3" value="a"> a) "John Doe"</label></li><li><label><input type="radio" name="q3" value="b"> b) " John Doe"</label></li><li><label><input type="radio" name="q3" value="c"> c) "" (an empty string)</label></li><li><label><input type="radio" name="q3" value="d"> d) The program will wait.</label></li></ul></div>
-                <div class="question-block" data-question-id="q4"><h4>Question 4: Which variable declarations cause a compilation error?</h4><pre><code>1: int _a; 2: int $my; 3: int 1st; 4: int final;</code></pre><ul class="options"><li><label><input type="radio" name="q4" value="a"> a) Only 3</label></li><li><label><input type="radio" name="q4" value="b"> b) Only 4</label></li><li><label><input type="radio" name="q4" value="c"> c) Both 3 and 4</label></li><li><label><input type="radio" name="q4" value="d"> d) Both 1 and 2</label></li></ul></div>
-                <div class="question-block" data-question-id="q5"><h4>Question 5: What is the output?</h4><pre><code>int x = Integer.MAX_VALUE; x = x + 1; System.out.println(x);</code></pre><ul class="options"><li><label><input type="radio" name="q5" value="a"> a) 2147483648</label></li><li><label><input type="radio" name="q5" value="b"> b) Throws an ArithmeticException.</label></li><li><label><input type="radio" name="q5" value="c"> c) -2147483648</label></li><li><label><input type="radio" name="q5" value="d"> d) 0</label></li></ul></div>
-                <!-- Topic 2 -->
-                <h2>Topic 2: Conditional Statements and switch-break</h2>
-                <div class="question-block" data-question-id="q6"><h4>Question 6: What is the output?</h4><pre><code>int code = 2; String r = ""; switch (code) { case 1: r+="A"; case 2: r+="B"; case 3: r+="C"; break; }</code></pre><ul class="options"><li><label><input type="radio" name="q6" value="a"> a) B</label></li><li><label><input type="radio" name="q6" value="b"> b) BC</label></li><li><label><input type="radio" name="q6" value="c"> c) BCD</label></li><li><label><input type="radio" name="q6" value="d"> d) B D</label></li></ul></div>
-                <div class="question-block" data-question-id="q7"><h4>Question 7: Given <code>x=10, y=5, z=12</code>, which is true?</h4><ul class="options"><li><label><input type="radio" name="q7" value="a"> a) <code>if (x > y && z < y)</code></label></li><li><label><input type="radio" name="q7" value="b"> b) <code>if (x < y || z < x)</code></label></li><li><label><input type="radio" name="q7" value="c"> c) <code>if (x > z || (y == 5 && x < z))</code></label></li><li><label><input type="radio" name="q7" value="d"> d) <code>if (x == z && y != z)</code></label></li></ul></div>
-                <div class="question-block" data-question-id="q8"><h4>Question 8: What is the output for <code>score = 85</code>?</h4><pre><code>if (score >= 60) { System.out.print("Pass. "); if (score >= 80) { System.out.print("Grade: B"); } }</code></pre><ul class="options"><li><label><input type="radio" name="q8" value="a"> a) Pass. Grade: B</label></li><li><label><input type="radio" name="q8" value="b"> b) Pass.</label></li><li><label><input type="radio" name="q8" value="c"> c) Pass. Grade: A</label></li><li><label><input type="radio" name="q8" value="d"> d) Grade: B</label></li></ul></div>
-                <div class="question-block" data-question-id="q9"><h4>Question 9: What is the value of <code>category</code>?</h4><pre><code>int temp = 25; String cat = temp > 30 ? "Hot" : temp < 15 ? "Cold" : "Moderate";</code></pre><ul class="options"><li><label><input type="radio" name="q9" value="a"> a) "Hot"</label></li><li><label><input type="radio" name="q9" value="b"> b) "Cold"</label></li><li><label><input type="radio" name="q9" value="c"> c) "Moderate"</label></li><li><label><input type="radio" name="q9" value="d"> d) Won't compile.</label></li></ul></div>
-                <div class="question-block" data-question-id="q10"><h4>Question 10: What is the output?</h4><pre><code>String day = "Holiday"; switch (day) { case "Work": ...; case "Weekend": ...; }</code></pre><ul class="options"><li><label><input type="radio" name="q10" value="a"> a) Work day</label></li><li><label><input type="radio" name="q10" value="b"> b) Weekend</label></li><li><label><input type="radio" name="q10" value="c"> c) No output.</label></li><li><label><input type="radio" name="q10" value="d"> d) A compilation error.</label></li></ul></div>
+                <!-- Question 1 -->
+                <div class="question-block" data-question-id="q1"><h4>Question 1: What is the output of the following Java code?</h4><pre><code>for (int i = 0; i < 5; i++) {
+    System.out.print(i + " ");
+}</code></pre><ul class="options"><li><label><input type="radio" name="q1" value="a"> a) <code>1 2 3 4 5</code></label></li><li><label><input type="radio" name="q1" value="b"> b) <code>0 1 2 3 4</code></label></li><li><label><input type="radio" name="q1" value="c"> c) <code>0 1 2 3 4 5</code></label></li><li><label><input type="radio" name="q1" value="d"> d) Compilation Error</label></li></ul></div>
+                
+                <!-- Question 2 -->
+                <div class="question-block" data-question-id="q2"><h4>Question 2: Which loop is guaranteed to execute its body at least once?</h4><ul class="options"><li><label><input type="radio" name="q2" value="a"> a) <code>for</code> loop</label></li><li><label><input type="radio" name="q2" value="b"> b) <code>while</code> loop</label></li><li><label><input type="radio" name="q2" value="c"> c) <code>do-while</code> loop</label></li><li><label><input type="radio" name="q2" value="d"> d) Enhanced <code>for</code> loop</label></li></ul></div>
+                
+                <!-- Question 3 -->
+                <div class="question-block" data-question-id="q3"><h4>Question 3: What will be printed by this code snippet?</h4><pre><code>int count = 5;
+while (count > 1) {
+    System.out.print(count + " ");
+    count -= 2;
+}</code></pre><ul class="options"><li><label><input type="radio" name="q3" value="a"> a) <code>5 3 1</code></label></li><li><label><input type="radio" name="q3" value="b"> b) <code>5 3</code></label></li><li><label><input type="radio" name="q3" value="c"> c) <code>5 4 3 2</code></label></li><li><label><input type="radio" name="q3" value="d"> d) The loop will not execute.</label></li></ul></div>
+                
+                <!-- Question 4 -->
+                <div class="question-block" data-question-id="q4"><h4>Question 4: How many times will the word "Hello" be printed?</h4><pre><code>for (int i = 0; i < 2; i++) {
+    for (int j = 0; j < 3; j++) {
+        System.out.println("Hello");
+    }
+}</code></pre><ul class="options"><li><label><input type="radio" name="q4" value="a"> a) 2</label></li><li><label><input type="radio" name="q4" value="b"> b) 3</label></li><li><label><input type="radio" name="q4" value="c"> c) 5</label></li><li><label><input type="radio" name="q4" value="d"> d) 6</label></li></ul></div>
+                
+                <!-- Question 5 -->
+                <div class="question-block" data-question-id="q5"><h4>Question 5: What is the effect of the <code>break</code> statement in a loop?</h4><ul class="options"><li><label><input type="radio" name="q5" value="a"> a) It skips the current iteration and proceeds to the next one.</label></li><li><label><input type="radio" name="q5" value="b"> b) It terminates the loop's execution immediately.</label></li><li><label><input type="radio" name="q5" value="c"> c) It pauses the loop's execution temporarily.</label></li><li><label><input type="radio" name="q5" value="d"> d) It causes a compilation error if used inside a <code>for</code> loop.</label></li></ul></div>
+                
+                <!-- Question 6 -->
+                <div class="question-block" data-question-id="q6"><h4>Question 6: What is the output of the following code?</h4><pre><code>for (int i = 1; i <= 5; i++) {
+    if (i == 3) {
+        continue;
+    }
+    System.out.print(i + " ");
+}</code></pre><ul class="options"><li><label><input type="radio" name="q6" value="a"> a) <code>1 2</code></label></li><li><label><input type="radio" name="q6" value="b"> b) <code>1 2 3 4 5</code></label></li><li><label><input type="radio" name="q6" value="c"> c) <code>1 2 4 5</code></label></li><li><label><input type="radio" name="q6" value="d"> d) <code>1 2 5</code></label></li></ul></div>
+                
+                <!-- Question 7 -->
+                <div class="question-block" data-question-id="q7">
+                    <h4>Question 7: Which code snippet correctly calculates the sum of all elements in an integer array <code>nums</code>?</h4>
+                    <pre>// Assume: int[] nums = {1, 2, 3, 4, 5};</pre>
+                    <ul class="options">
+                        <li>
+                            <label>
+                                <input type="radio" name="q7" value="a"> a)
+                                <pre><code>int sum = 0;
+for (int i = 1; i < nums.length; i++) {
+    sum += nums[i];
+}</code></pre>
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q7" value="b"> b)
+                                <pre><code>int sum = 0;
+for (int n : nums) {
+    sum += n;
+}</code></pre>
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q7" value="c"> c)
+                                <pre><code>int sum = 0;
+while (int n : nums) {
+    sum += n;
+}</code></pre>
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" name="q7" value="d"> d)
+                                <pre><code>int sum = 0;
+do {
+    sum += nums;
+} while (nums.hasNext());</code></pre>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question-block" data-question-id="q8"><h4>Question 8: What is the output of this <code>do-while</code> loop?</h4><pre><code>int x = 10;
+do {
+    System.out.print("Value is " + x);
+    x++;
+} while (x < 10);</code></pre><ul class="options"><li><label><input type="radio" name="q8" value="a"> a) <code>Value is 10</code></label></li><li><label><input type="radio" name="q8" value="b"> b) No output is produced.</label></li><li><label><input type="radio" name="q8" value="c"> c) <code>Value is 11</code></label></li><li><label><input type="radio" name="q8" value="d"> d) Compilation Error</label></li></ul></div>
+
+                <!-- Question 9 -->
+                <div class="question-block" data-question-id="q9"><h4>Question 9: Which of the following will result in an infinite loop? (Assuming no <code>break</code> or <code>return</code> statements are inside the loop body).</h4><ul class="options"><li><label><input type="radio" name="q9" value="a"> a) <code>for (int i = 10; i > 0; i++)</code></label></li><li><label><input type="radio" name="q9" value="b"> b) <code>for (int i = 0; i < 10; i--)</code></label></li><li><label><input type="radio" name="q9" value="c"> c) <code>for (int i = 5; i > 0; i--)</code></label></li><li><label><input type="radio" name="q9" value="d"> d) <code>for ( ; ; )</code></label></li></ul></div>
+
+                <!-- Question 10 -->
+                <div class="question-block" data-question-id="q10"><h4>Question 10: What does the following code print?</h4><pre><code>int k = 0;
+while (k++ < 4) {
+    System.out.print(k + " ");
+}</code></pre><ul class="options"><li><label><input type="radio" name="q10" value="a"> a) <code>0 1 2 3</code></label></li><li><label><input type="radio" name="q10" value="b"> b) <code>1 2 3 4</code></label></li><li><label><input type="radio" name="q10" value="c"> c) <code>0 1 2 3 4</code></label></li><li><label><input type="radio" name="q10" value="d"> d) <code>1 2 3</code></label></li></ul></div>
+
                 <button type="submit" id="submit-btn">Submit Quiz</button>
             </form>
         </div>
 
-        <!-- Results Container -->
+        <!-- Results and Admin Containers + Script -->
         <div class="container view" id="results-container" style="display: none;">
             <h2 id="result-header"></h2>
             <p id="score-text" style="text-align: center; font-size: 1.2em;"></p>
@@ -130,8 +222,6 @@
             <h3>Answer Key & Explanations</h3>
             <ul id="results-list"></ul>
         </div>
-
-        <!-- Admin Container -->
         <div class="container view" id="admin-container" style="display: none;">
             <h1>Quiz Admin Results</h1>
             <p id="admin-status">Loading results from Firebase...</p>
@@ -145,13 +235,10 @@
                     </tr>
                 </thead>
                 <tbody id="admin-results-body">
-                    <!-- Data will be inserted here -->
                 </tbody>
             </table>
         </div>
     </div>
-
-    <!-- Firebase SDK -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
       import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
@@ -168,36 +255,31 @@
 
       const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
-
-      // --- DOM Elements & Global State ---
       const allViews = document.querySelectorAll('.view');
       const nameInput = document.getElementById('name-input');
       const quizForm = document.getElementById('quiz-form');
       let userName = '';
       
-      // --- Answer Key & Explanations ---
       const answerKey = {
-        q1: { answer: 'b', explanation: 'Java evaluates expressions left to right. `10 + 5` is integer addition (15). Then, `15 + " is..."` starts string concatenation. Every subsequent `+` also concatenates, making the end result `...not 105`.' },
-        q2: { answer: 'a', explanation: 'Casting a `double` to an `int` truncates (cuts off) the decimal part, it does not round. So, 9.99 becomes 9.' },
-        q3: { answer: 'c', explanation: '`scanner.nextInt()` reads the integer but leaves the newline character (\\n) in the buffer. The next `scanner.nextLine()` reads this leftover newline, returning an empty string.' },
-        q4: { answer: 'c', explanation: 'Variable names cannot start with a number (`1stPlace`) and cannot be a reserved keyword (`final`).' },
-        q5: { answer: 'c', explanation: 'Adding 1 to `Integer.MAX_VALUE` causes an integer overflow, which "wraps around" to `Integer.MIN_VALUE` (-2147483648).' },
-        q6: { answer: 'b', explanation: 'The switch starts at `case 2` and "falls through" to `case 3` because `case 2` has no `break` statement. The `break` in `case 3` stops it.' },
-        q7: { answer: 'c', explanation: 'Evaluation: `(10 > 12 || (5 == 5 && 10 < 12))` -> `(false || (true && true))` -> `(false || true)` -> `true`.' },
-        q8: { answer: 'a', explanation: '`score >= 60` is true, so "Pass. " is printed. Then, `score >= 80` is also true, so "Grade: B" is printed.' },
-        q9: { answer: 'c', explanation: 'The first ternary `temp > 30` is false, so the second part is evaluated: `temp < 15 ? "Cold" : "Moderate"`. This is also false, so "Moderate" is chosen.' },
-        q10: { answer: 'c', explanation: 'The `switch` looks for the value "Holiday", which doesn\'t match any `case`. Since there is no `default` block, nothing happens.' }
+        q1: { answer: 'b', explanation: 'The loop starts with i = 0 and continues as long as i is less than 5. The i++ increments i after each iteration, printing values from 0 up to 4.' },
+        q2: { answer: 'c', explanation: 'A do-while loop checks its condition *after* the loop body has executed, guaranteeing at least one execution.' },
+        q3: { answer: 'b', explanation: 'The loop starts with count = 5. It prints 5, then count becomes 3. It prints 3, then count becomes 1. The condition 1 > 1 is false, so the loop terminates.' },
+        q4: { answer: 'd', explanation: 'This is a nested loop. The outer loop runs 2 times (i=0, i=1). For each run of the outer loop, the inner loop runs 3 times (j=0, j=1, j=2). Therefore, "Hello" is printed 2 * 3 = 6 times.' },
+        q5: { answer: 'b', explanation: 'The `break` keyword is used to exit a loop or switch statement prematurely and immediately.' },
+        q6: { answer: 'c', explanation: 'The `continue` statement skips the rest of the current iteration. When i is 3, the `continue` statement is executed, and the `System.out.print` for that iteration is skipped.' },
+        q7: { answer: 'b', explanation: 'This shows the correct syntax for an enhanced for-loop (or for-each loop), which is the most concise way to iterate over all elements of an array. Option (a) misses the first element. Options (c) and (d) have invalid syntax.' },
+        q8: { answer: 'a', explanation: 'A do-while loop executes its body once before checking the condition. It prints "Value is 10", x is incremented to 11, and then the condition `11 < 10` is checked, which is false, terminating the loop.' },
+        q9: { answer: 'd', explanation: '`for ( ; ; )` is the standard, idiomatic way to write an infinite loop in Java. While other options like `for (int i=0; i<10; i--)` would also run forever due to flawed logic, `for ( ; ; )` is the syntax specifically designed for this purpose.' },
+        q10: { answer: 'b', explanation: 'This tests the post-increment operator (k++). The value of k is used in the comparison *before* it is incremented. 1) k=0, 0<4 is true, k becomes 1, print 1. 2) k=1, 1<4 is true, k becomes 2, print 2. 3) k=2, 2<4 is true, k becomes 3, print 3. 4) k=3, 3<4 is true, k becomes 4, print 4. 5) k=4, 4<4 is false, loop ends.' }
       };
       const totalQuestions = Object.keys(answerKey).length;
       
-      // --- View Management ---
       function showView(viewId) {
           allViews.forEach(view => {
               view.style.display = view.id === viewId ? 'block' : 'none';
           });
       }
 
-      // --- Navigation Event Listeners ---
       document.getElementById('nav-quiz').addEventListener('click', () => {
         quizForm.reset();
         showView('name-container');
@@ -207,7 +289,6 @@
         loadAdminResults();
       });
 
-      // --- Quiz Flow ---
       document.getElementById('start-quiz-btn').addEventListener('click', () => {
           userName = nameInput.value.trim();
           if (userName) {
@@ -246,9 +327,21 @@
               const qId = block.getAttribute('data-question-id');
               const li = document.createElement('li');
               li.className = userAnswers[qId] === answerKey[qId].answer ? 'correct' : 'incorrect';
+              
+              let userAnswerText = "<em>Not Answered</em>";
+              if (userAnswers[qId] !== "Not Answered") {
+                  const label = block.querySelector(`input[value="${userAnswers[qId]}"]`).parentElement;
+                  const labelClone = label.cloneNode(true);
+                  labelClone.removeChild(labelClone.querySelector('input'));
+                  if (labelClone.querySelector('pre')) {
+                    labelClone.removeChild(labelClone.querySelector('pre'));
+                  }
+                  userAnswerText = `<code>${labelClone.textContent.trim()}</code>`;
+              }
+
               li.innerHTML = `
                   <p><strong>${block.querySelector('h4').textContent}</strong></p>
-                  <p>Your answer: ${userAnswers[qId] === "Not Answered" ? "<em>Not Answered</em>" : `<code>${userAnswers[qId]}</code>`}</p>
+                  <p>Your answer: ${userAnswerText}</p>
                   <div class="explanation"><strong>Explanation:</strong> ${answerKey[qId].explanation}</div>
               `;
               resultsList.appendChild(li);
@@ -274,7 +367,6 @@
           });
       }
       
-      // --- Admin Panel Logic ---
       const adminResultsBody = document.getElementById('admin-results-body');
       function loadAdminResults() {
           const resultsRef = ref(database, 'quizResults');
@@ -315,9 +407,7 @@
           }
       });
 
-      // --- Initial Load ---
       showView('name-container');
-
     </script>
 </body>
 </html>
