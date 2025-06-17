@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Java Quiz App</title>
+    <title>Java Quiz App - Functions</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -58,13 +58,11 @@
         .options label { display: block; padding: 10px; background-color: #ecf0f1; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
         .options label:hover { background-color: #d6eaf8; }
         
-        /* --- *** THE DEFINITIVE FIX *** --- */
-        /* This rule targets <pre> blocks inside option labels. */
-        /* The !important flag forces these styles to apply, overriding any conflicts. */
+        /* This rule might be less critical now but kept for robustness */
         .options label pre {
-            background-color: #f8f9fa !important; /* A light background */
-            color: #212529 !important;             /* A dark text color */
-            border: 1px solid #dee2e6 !important;  /* A subtle border */
+            background-color: #f8f9fa !important;
+            color: #212529 !important;
+            border: 1px solid #dee2e6 !important;
             margin-top: 8px;
             padding: 10px;
             text-align: left;
@@ -107,7 +105,7 @@
     <div class="main-content">
         <!-- Name Container -->
         <div class="container view" id="name-container">
-            <h1>Welcome to the Java Quiz</h1>
+            <h1>Welcome to the Java Functions Quiz</h1>
             <p>Please enter your name to begin.</p>
             <input type="text" id="name-input" placeholder="Your Name" required>
             <button id="start-quiz-btn">Start Quiz</button>
@@ -115,100 +113,184 @@
 
         <!-- Quiz Container -->
         <div class="container view" id="quiz-container" style="display: none;">
-            <h1>Java Loops Quiz</h1>
+            <h1>Java Functions Quiz</h1>
             <form id="quiz-form">
                 <!-- Question 1 -->
-                <div class="question-block" data-question-id="q1"><h4>Question 1: What is the output of the following Java code?</h4><pre><code>for (int i = 0; i < 5; i++) {
-    System.out.print(i + " ");
-}</code></pre><ul class="options"><li><label><input type="radio" name="q1" value="a"> a) <code>1 2 3 4 5</code></label></li><li><label><input type="radio" name="q1" value="b"> b) <code>0 1 2 3 4</code></label></li><li><label><input type="radio" name="q1" value="c"> c) <code>0 1 2 3 4 5</code></label></li><li><label><input type="radio" name="q1" value="d"> d) Compilation Error</label></li></ul></div>
+                <div class="question-block" data-question-id="q1">
+                    <h4>Question 1: Consider the following Java code:</h4>
+                    <pre><code>class Calculator {
+    public void addAndPrint(int a, int b) {
+        int sum = a + b;
+        System.out.println("Sum: " + sum);
+    }
+
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        // Line X
+    }
+}</code></pre>
+                    <p>Which of the following, if placed at <code>// Line X</code>, would be a valid way to call the <code>addAndPrint</code> method and what would be its logical outcome?</p>
+                    <ul class="options">
+                        <li><label><input type="radio" name="q1" value="a"> a) <code>int result = calc.addAndPrint(5, 3);</code> - This is valid and <code>result</code> will be 8.</label></li>
+                        <li><label><input type="radio" name="q1" value="b"> b) <code>calc.addAndPrint(5, 3);</code> - This is valid and "Sum: 8" will be printed to the console.</label></li>
+                        <li><label><input type="radio" name="q1" value="c"> c) <code>Calculator.addAndPrint(5, 3);</code> - This is valid because <code>main</code> is static.</label></li>
+                        <li><label><input type="radio" name="q1" value="d"> d) <code>addAndPrint(5, 3);</code> - This is valid as it's in the same class.</label></li>
+                    </ul>
+                </div>
                 
                 <!-- Question 2 -->
-                <div class="question-block" data-question-id="q2"><h4>Question 2: Which loop is guaranteed to execute its body at least once?</h4><ul class="options"><li><label><input type="radio" name="q2" value="a"> a) <code>for</code> loop</label></li><li><label><input type="radio" name="q2" value="b"> b) <code>while</code> loop</label></li><li><label><input type="radio" name="q2" value="c"> c) <code>do-while</code> loop</label></li><li><label><input type="radio" name="q2" value="d"> d) Enhanced <code>for</code> loop</label></li></ul></div>
+                <div class="question-block" data-question-id="q2">
+                    <h4>Question 2: What is the primary logical implication of a Java method being declared as <code>static</code>?</h4>
+                    <ul class="options">
+                        <li><label><input type="radio" name="q2" value="a"> a) The method can only be called by other <code>static</code> methods.</label></li>
+                        <li><label><input type="radio" name="q2" value="b"> b) The method operates on an instance of the class and can access instance variables directly.</label></li>
+                        <li><label><input type="radio" name="q2" value="c"> c) The method belongs to the class itself, not to any specific instance of the class, and is typically called using the class name.</label></li>
+                        <li><label><input type="radio" name="q2" value="d"> d) The method cannot be overloaded.</label></li>
+                    </ul>
+                </div>
                 
                 <!-- Question 3 -->
-                <div class="question-block" data-question-id="q3"><h4>Question 3: What will be printed by this code snippet?</h4><pre><code>int count = 5;
-while (count > 1) {
-    System.out.print(count + " ");
-    count -= 2;
-}</code></pre><ul class="options"><li><label><input type="radio" name="q3" value="a"> a) <code>5 3 1</code></label></li><li><label><input type="radio" name="q3" value="b"> b) <code>5 3</code></label></li><li><label><input type="radio" name="q3" value="c"> c) <code>5 4 3 2</code></label></li><li><label><input type="radio" name="q3" value="d"> d) The loop will not execute.</label></li></ul></div>
+                <div class="question-block" data-question-id="q3">
+                    <h4>Question 3: Given the Java code:</h4>
+                    <pre><code>class ValueChanger {
+    public void modify(int x) {
+        x = x + 10;
+        System.out.println("Inside method: " + x);
+    }
+
+    public static void main(String[] args) {
+        ValueChanger vc = new ValueChanger();
+        int num = 5;
+        vc.modify(num);
+        System.out.println("Outside method: " + num);
+    }
+}</code></pre>
+                    <p>What will be the output?</p>
+                    <ul class="options">
+                        <li><label><input type="radio" name="q3" value="a"> a) Inside method: 15<br>   Outside method: 15</label></li>
+                        <li><label><input type="radio" name="q3" value="b"> b) Inside method: 15<br>   Outside method: 5</label></li>
+                        <li><label><input type="radio" name="q3" value="c"> c) Inside method: 5<br>   Outside method: 5</label></li>
+                        <li><label><input type="radio" name="q3" value="d"> d) The code will produce a compile-time error.</label></li>
+                    </ul>
+                </div>
                 
                 <!-- Question 4 -->
-                <div class="question-block" data-question-id="q4"><h4>Question 4: How many times will the word "Hello" be printed?</h4><pre><code>for (int i = 0; i < 2; i++) {
-    for (int j = 0; j < 3; j++) {
-        System.out.println("Hello");
+                <div class="question-block" data-question-id="q4">
+                    <h4>Question 4: Consider this Java code snippet:</h4>
+                    <pre><code>class MyArrayChanger {
+    public void changeFirstElement(int[] arr) {
+        if (arr != null && arr.length > 0) {
+            arr[0] = 99;
+        }
     }
-}</code></pre><ul class="options"><li><label><input type="radio" name="q4" value="a"> a) 2</label></li><li><label><input type="radio" name="q4" value="b"> b) 3</label></li><li><label><input type="radio" name="q4" value="c"> c) 5</label></li><li><label><input type="radio" name="q4" value="d"> d) 6</label></li></ul></div>
+
+    public static void main(String[] args) {
+        MyArrayChanger mac = new MyArrayChanger();
+        int[] myArray = {10, 20, 30};
+        mac.changeFirstElement(myArray);
+        System.out.println(myArray[0]);
+    }
+}</code></pre>
+                    <p>What will be printed to the console?</p>
+                    <ul class="options">
+                        <li><label><input type="radio" name="q4" value="a"> a) 10</label></li>
+                        <li><label><input type="radio" name="q4" value="b"> b) 99</label></li>
+                        <li><label><input type="radio" name="q4" value="c"> c) 0</label></li>
+                        <li><label><input type="radio" name="q4" value="d"> d) An ArrayIndexOutOfBoundsException will be thrown.</label></li>
+                    </ul>
+                </div>
                 
                 <!-- Question 5 -->
-                <div class="question-block" data-question-id="q5"><h4>Question 5: What is the effect of the <code>break</code> statement in a loop?</h4><ul class="options"><li><label><input type="radio" name="q5" value="a"> a) It skips the current iteration and proceeds to the next one.</label></li><li><label><input type="radio" name="q5" value="b"> b) It terminates the loop's execution immediately.</label></li><li><label><input type="radio" name="q5" value="c"> c) It pauses the loop's execution temporarily.</label></li><li><label><input type="radio" name="q5" value="d"> d) It causes a compilation error if used inside a <code>for</code> loop.</label></li></ul></div>
+                <div class="question-block" data-question-id="q5">
+                    <h4>Question 5: If a Java method is declared with a <code>void</code> return type, what does this logically signify?</h4>
+                    <ul class="options">
+                        <li><label><input type="radio" name="q5" value="a"> a) The method must return a <code>null</code> value.</label></li>
+                        <li><label><input type="radio" name="q5" value="b"> b) The method performs an action but does not return any value to its caller.</label></li>
+                        <li><label><input type="radio" name="q5" value="c"> c) The method can optionally return a value, but it's not required.</label></li>
+                        <li><label><input type="radio" name="q5" value="d"> d) The method can only contain <code>System.out.println()</code> statements.</label></li>
+                    </ul>
+                </div>
                 
                 <!-- Question 6 -->
-                <div class="question-block" data-question-id="q6"><h4>Question 6: What is the output of the following code?</h4><pre><code>for (int i = 1; i <= 5; i++) {
-    if (i == 3) {
-        continue;
+                <div class="question-block" data-question-id="q6">
+                    <h4>Question 6: Consider the following overloaded methods in a class <code>Printer</code>:</h4>
+                    <pre><code>class Printer {
+    public void print(int i) {
+        System.out.println("Integer: " + i);
     }
-    System.out.print(i + " ");
-}</code></pre><ul class="options"><li><label><input type="radio" name="q6" value="a"> a) <code>1 2</code></label></li><li><label><input type="radio" name="q6" value="b"> b) <code>1 2 3 4 5</code></label></li><li><label><input type="radio" name="q6" value="c"> c) <code>1 2 4 5</code></label></li><li><label><input type="radio" name="q6" value="d"> d) <code>1 2 5</code></label></li></ul></div>
+    public void print(String s) {
+        System.out.println("String: " + s);
+    }
+    public void print(double d) {
+        System.out.println("Double: " + d);
+    }
+}</code></pre>
+                    <p>If the following call is made: <code>new Printer().print(5.0f);</code> (where <code>5.0f</code> is a float literal), which method will be invoked?</p>
+                    <ul class="options">
+                        <li><label><input type="radio" name="q6" value="a"> a) <code>print(int i)</code> due to implicit conversion.</label></li>
+                        <li><label><input type="radio" name="q6" value="b"> b) <code>print(String s)</code> because float can be converted to String.</label></li>
+                        <li><label><input type="radio" name="q6" value="c"> c) <code>print(double d)</code> due to widening primitive conversion.</label></li>
+                        <li><label><input type="radio" name="q6" value="d"> d) The code will result in a compile-time error because no exact match for <code>float</code> exists.</label></li>
+                    </ul>
+                </div>
                 
                 <!-- Question 7 -->
                 <div class="question-block" data-question-id="q7">
-                    <h4>Question 7: Which code snippet correctly calculates the sum of all elements in an integer array <code>nums</code>?</h4>
-                    <pre>// Assume: int[] nums = {1, 2, 3, 4, 5};</pre>
+                    <h4>Question 7: What is the logical purpose of the <code>return</code> keyword within a Java method that is NOT <code>void</code>?</h4>
                     <ul class="options">
-                        <li>
-                            <label>
-                                <input type="radio" name="q7" value="a"> a)
-                                <pre><code>int sum = 0;
-for (int i = 1; i < nums.length; i++) {
-    sum += nums[i];
-}</code></pre>
-                            </label>
-                        </li>
-                        <li>
-                            <label>
-                                <input type="radio" name="q7" value="b"> b)
-                                <pre><code>int sum = 0;
-for (int n : nums) {
-    sum += n;
-}</code></pre>
-                            </label>
-                        </li>
-                        <li>
-                            <label>
-                                <input type="radio" name="q7" value="c"> c)
-                                <pre><code>int sum = 0;
-while (int n : nums) {
-    sum += n;
-}</code></pre>
-                            </label>
-                        </li>
-                        <li>
-                            <label>
-                                <input type="radio" name="q7" value="d"> d)
-                                <pre><code>int sum = 0;
-do {
-    sum += nums;
-} while (nums.hasNext());</code></pre>
-                            </label>
-                        </li>
+                        <li><label><input type="radio" name="q7" value="a"> a) To terminate the method's execution immediately, regardless of whether a value is provided.</label></li>
+                        <li><label><input type="radio" name="q7" value="b"> b) To pass a specific value back to the code that called the method.</label></li>
+                        <li><label><input type="radio" name="q7" value="c"> c) To indicate that the method has completed successfully.</label></li>
+                        <li><label><input type="radio" name="q7" value="d"> d) To print a value to the console before exiting the method.</label></li>
                     </ul>
                 </div>
 
                 <!-- Question 8 -->
-                <div class="question-block" data-question-id="q8"><h4>Question 8: What is the output of this <code>do-while</code> loop?</h4><pre><code>int x = 10;
-do {
-    System.out.print("Value is " + x);
-    x++;
-} while (x < 10);</code></pre><ul class="options"><li><label><input type="radio" name="q8" value="a"> a) <code>Value is 10</code></label></li><li><label><input type="radio" name="q8" value="b"> b) No output is produced.</label></li><li><label><input type="radio" name="q8" value="c"> c) <code>Value is 11</code></label></li><li><label><input type="radio" name="q8" value="d"> d) Compilation Error</label></li></ul></div>
+                <div class="question-block" data-question-id="q8">
+                    <h4>Question 8: Examine the recursive Java function:</h4>
+                    <pre><code>class Recur {
+    public int calculate(int n) {
+        if (n <= 0) {
+            return 0;
+        }
+        return n + calculate(n - 2);
+    }
+
+    public static void main(String[] args) {
+        Recur r = new Recur();
+        System.out.println(r.calculate(5));
+    }
+}</code></pre>
+                    <p>What will be the output of <code>r.calculate(5)</code>?</p>
+                    <ul class="options">
+                        <li><label><input type="radio" name="q8" value="a"> a) 0</label></li>
+                        <li><label><input type="radio" name="q8" value="b"> b) 5</label></li>
+                        <li><label><input type="radio" name="q8" value="c"> c) 9 (5 + 3 + 1)</label></li>
+                        <li><label><input type="radio" name="q8" value="d"> d) 15 (5 + 4 + 3 + 2 + 1)</label></li>
+                    </ul>
+                </div>
 
                 <!-- Question 9 -->
-                <div class="question-block" data-question-id="q9"><h4>Question 9: Which of the following will result in an infinite loop? (Assuming no <code>break</code> or <code>return</code> statements are inside the loop body).</h4><ul class="options"><li><label><input type="radio" name="q9" value="a"> a) <code>for (int i = 10; i > 0; i++)</code></label></li><li><label><input type="radio" name="q9" value="b"> b) <code>for (int i = 0; i < 10; i--)</code></label></li><li><label><input type="radio" name="q9" value="c"> c) <code>for (int i = 5; i > 0; i--)</code></label></li><li><label><input type="radio" name="q9" value="d"> d) <code>for ( ; ; )</code></label></li></ul></div>
+                <div class="question-block" data-question-id="q9">
+                    <h4>Question 9: Consider a method signature: <code>public String processData(String input, int count)</code><br>What defines the "signature" of this method, primarily for purposes like overloading?</h4>
+                    <ul class="options">
+                        <li><label><input type="radio" name="q9" value="a"> a) <code>public String processData</code></label></li>
+                        <li><label><input type="radio" name="q9" value="b"> b) <code>processData</code></label></li>
+                        <li><label><input type="radio" name="q9" value="c"> c) <code>processData(String, int)</code></label></li>
+                        <li><label><input type="radio" name="q9" value="d"> d) <code>String processData(String input, int count)</code></label></li>
+                    </ul>
+                </div>
 
                 <!-- Question 10 -->
-                <div class="question-block" data-question-id="q10"><h4>Question 10: What does the following code print?</h4><pre><code>int k = 0;
-while (k++ < 4) {
-    System.out.print(k + " ");
-}</code></pre><ul class="options"><li><label><input type="radio" name="q10" value="a"> a) <code>0 1 2 3</code></label></li><li><label><input type="radio" name="q10" value="b"> b) <code>1 2 3 4</code></label></li><li><label><input type="radio" name="q10" value="c"> c) <code>0 1 2 3 4</code></label></li><li><label><input type="radio" name="q10" value="d"> d) <code>1 2 3</code></label></li></ul></div>
+                <div class="question-block" data-question-id="q10">
+                    <h4>Question 10: If a variable is declared inside a method in Java (e.g., <code>int temp = 10;</code>), what is its scope?</h4>
+                    <ul class="options">
+                        <li><label><input type="radio" name="q10" value="a"> a) It is accessible from anywhere within the class.</label></li>
+                        <li><label><input type="radio" name="q10" value="b"> b) It is accessible only within that method, from the point of declaration to the end of the method's block.</label></li>
+                        <li><label><input type="radio" name="q10" value="c"> c) It is accessible by any method called from the current method.</label></li>
+                        <li><label><input type="radio" name="q10" value="d"> d) It is accessible globally throughout the entire application.</label></li>
+                    </ul>
+                </div>
 
                 <button type="submit" id="submit-btn">Submit Quiz</button>
             </form>
@@ -244,13 +326,13 @@ while (k++ < 4) {
       import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
       
       const firebaseConfig = {
-        apiKey: "AIzaSyDYGPni4PdzWOMTg1-zL7klmmMPgrZNn2I",
-        authDomain: "to-do-list-84cee.firebaseapp.com",
-        databaseURL: "https://to-do-list-84cee-default-rtdb.firebaseio.com",
-        projectId: "to-do-list-84cee",
-        storageBucket: "to-do-list-84cee.firebasestorage.app",
-        messagingSenderId: "623916391670",
-        appId: "1:623916391670:web:af46cbb278d2fac6f060d7"
+        apiKey: "AIzaSyDYGPni4PdzWOMTg1-zL7klmmMPgrZNn2I", // Replace with your actual Firebase API key
+        authDomain: "to-do-list-84cee.firebaseapp.com", // Replace with your Firebase auth domain
+        databaseURL: "https://to-do-list-84cee-default-rtdb.firebaseio.com", // Replace with your Firebase database URL
+        projectId: "to-do-list-84cee", // Replace with your Firebase project ID
+        storageBucket: "to-do-list-84cee.firebasestorage.app", // Replace with your Firebase storage bucket
+        messagingSenderId: "623916391670", // Replace with your Firebase messaging sender ID
+        appId: "1:623916391670:web:af46cbb278d2fac6f060d7" // Replace with your Firebase app ID
       };
 
       const app = initializeApp(firebaseConfig);
@@ -261,16 +343,16 @@ while (k++ < 4) {
       let userName = '';
       
       const answerKey = {
-        q1: { answer: 'b', explanation: 'The loop starts with i = 0 and continues as long as i is less than 5. The i++ increments i after each iteration, printing values from 0 up to 4.' },
-        q2: { answer: 'c', explanation: 'A do-while loop checks its condition *after* the loop body has executed, guaranteeing at least one execution.' },
-        q3: { answer: 'b', explanation: 'The loop starts with count = 5. It prints 5, then count becomes 3. It prints 3, then count becomes 1. The condition 1 > 1 is false, so the loop terminates.' },
-        q4: { answer: 'd', explanation: 'This is a nested loop. The outer loop runs 2 times (i=0, i=1). For each run of the outer loop, the inner loop runs 3 times (j=0, j=1, j=2). Therefore, "Hello" is printed 2 * 3 = 6 times.' },
-        q5: { answer: 'b', explanation: 'The `break` keyword is used to exit a loop or switch statement prematurely and immediately.' },
-        q6: { answer: 'c', explanation: 'The `continue` statement skips the rest of the current iteration. When i is 3, the `continue` statement is executed, and the `System.out.print` for that iteration is skipped.' },
-        q7: { answer: 'b', explanation: 'This shows the correct syntax for an enhanced for-loop (or for-each loop), which is the most concise way to iterate over all elements of an array. Option (a) misses the first element. Options (c) and (d) have invalid syntax.' },
-        q8: { answer: 'a', explanation: 'A do-while loop executes its body once before checking the condition. It prints "Value is 10", x is incremented to 11, and then the condition `11 < 10` is checked, which is false, terminating the loop.' },
-        q9: { answer: 'd', explanation: '`for ( ; ; )` is the standard, idiomatic way to write an infinite loop in Java. While other options like `for (int i=0; i<10; i--)` would also run forever due to flawed logic, `for ( ; ; )` is the syntax specifically designed for this purpose.' },
-        q10: { answer: 'b', explanation: 'This tests the post-increment operator (k++). The value of k is used in the comparison *before* it is incremented. 1) k=0, 0<4 is true, k becomes 1, print 1. 2) k=1, 1<4 is true, k becomes 2, print 2. 3) k=2, 2<4 is true, k becomes 3, print 3. 4) k=3, 3<4 is true, k becomes 4, print 4. 5) k=4, 4<4 is false, loop ends.' }
+        q1: { answer: 'b', explanation: '`addAndPrint` is a `void` method, so it doesn\'t return a value to assign. It\'s an instance method, so it needs an instance (`calc`) to be called. Option b correctly calls the method and describes its side effect (printing).' },
+        q2: { answer: 'c', explanation: 'Static methods are associated with the class, not instances. They cannot directly access instance variables or methods (unless an instance is passed to them). They are typically invoked using `ClassName.methodName()`.' },
+        q3: { answer: 'b', explanation: 'Java passes primitive types (like int) by value. This means a copy of `num` is passed to the `modify` method. Changes to the parameter `x` inside `modify` do not affect the original `num` variable in `main`.' },
+        q4: { answer: 'b', explanation: 'In Java, object references (like array references) are passed by value. This means the method receives a copy of the reference, but this copied reference still points to the *same* array object in memory. Therefore, modifications to the array\'s contents within the method are visible outside the method.' },
+        q5: { answer: 'b', explanation: 'The `void` keyword explicitly means that the method does not return any value to the calling code. It performs its operations and then control returns to the caller without passing back data.' },
+        q6: { answer: 'c', explanation: 'Java\'s method overloading resolution first looks for an exact match. If not found, it tries widening primitive conversions (e.g., `byte` to `short` to `int` to `long` to `float` to `double`). Since `5.0f` is a float, it can be widened to `double`, so `print(double d)` is called.' },
+        q7: { answer: 'b', explanation: 'In a non-void method, the `return` statement is used to send a value of the method\'s declared return type back to the caller. The method execution also terminates at the return statement.' },
+        q8: { answer: 'c', explanation: 'The recursion unfolds as: calculate(5) = 5 + calculate(3); calculate(3) = 3 + calculate(1); calculate(1) = 1 + calculate(-1); calculate(-1) = 0. So, it becomes 5 + (3 + (1 + 0)) = 5 + 3 + 1 = 9.' },
+        q9: { answer: 'c', explanation: 'In Java, the method signature consists of the method name and the sequence of its parameter types (and their order). The return type and access modifiers are not part of the signature for overloading purposes.' },
+        q10: { answer: 'b', explanation: 'Variables declared inside a method are local variables. Their scope is limited to the block in which they are declared, typically from the point of declaration until the closing curly brace `}` of the method or block.' }
       };
       const totalQuestions = Object.keys(answerKey).length;
       
@@ -282,6 +364,7 @@ while (k++ < 4) {
 
       document.getElementById('nav-quiz').addEventListener('click', () => {
         quizForm.reset();
+        document.getElementById('name-input').value = ''; // Clear name input as well
         showView('name-container');
       });
       document.getElementById('nav-admin').addEventListener('click', () => {
@@ -331,16 +414,31 @@ while (k++ < 4) {
               let userAnswerText = "<em>Not Answered</em>";
               if (userAnswers[qId] !== "Not Answered") {
                   const label = block.querySelector(`input[value="${userAnswers[qId]}"]`).parentElement;
-                  const labelClone = label.cloneNode(true);
-                  labelClone.removeChild(labelClone.querySelector('input'));
-                  if (labelClone.querySelector('pre')) {
-                    labelClone.removeChild(labelClone.querySelector('pre'));
+                  const labelClone = label.cloneNode(true); // Clone to avoid modifying original DOM
+                  labelClone.removeChild(labelClone.querySelector('input')); // Remove radio button from clone
+                  
+                  // If option label contains a <pre> block for code options, remove it for concise display
+                  const preInLabel = labelClone.querySelector('pre');
+                  if (preInLabel) {
+                    labelClone.removeChild(preInLabel); 
                   }
-                  userAnswerText = `<code>${labelClone.textContent.trim()}</code>`;
+                  // Clean up potentially remaining text from multi-line options
+                  let textContent = labelClone.innerHTML.replace(/<br\s*\/?>/gi, " ").trim(); // Replace <br> with space
+                  // remove the "a) ", "b) " prefix
+                  textContent = textContent.replace(/^[a-d]\)\s*/, ''); 
+                  userAnswerText = `<code>${textContent}</code>`;
               }
 
+              // Get the question text. For questions with main code block, get h4 + the p tag if it exists.
+              let questionFullText = block.querySelector('h4').innerHTML;
+              const questionPara = block.querySelector('h4 + p, h4 + pre + p'); // p after h4 or after h4+pre
+              if (questionPara) {
+                  questionFullText += '<br>' + questionPara.innerHTML;
+              }
+
+
               li.innerHTML = `
-                  <p><strong>${block.querySelector('h4').textContent}</strong></p>
+                  <p><strong>${questionFullText}</strong></p>
                   <p>Your answer: ${userAnswerText}</p>
                   <div class="explanation"><strong>Explanation:</strong> ${answerKey[qId].explanation}</div>
               `;
@@ -362,8 +460,9 @@ while (k++ < 4) {
               statusEl.textContent = "Results saved successfully!";
               statusEl.style.color = "green";
           }).catch(error => {
-              statusEl.textContent = "Could not save results.";
+              statusEl.textContent = "Could not save results: " + error.message;
               statusEl.style.color = "red";
+              console.error("Firebase save error:", error);
           });
       }
       
@@ -376,6 +475,7 @@ while (k++ < 4) {
               adminResultsBody.innerHTML = '';
               if (snapshot.exists()) {
                   const data = snapshot.val();
+                  // Sort by timestamp descending (newest first)
                   const resultsArray = Object.entries(data).sort((a, b) => new Date(b[1].timestamp) - new Date(a[1].timestamp));
 
                   resultsArray.forEach(([key, result]) => {
@@ -392,6 +492,10 @@ while (k++ < 4) {
               } else {
                   statusEl.textContent = "No quiz results found in the database.";
               }
+          }, (error) => {
+              statusEl.textContent = "Error loading results: " + error.message;
+              statusEl.style.color = "red";
+              console.error("Firebase load error:", error);
           });
       }
 
