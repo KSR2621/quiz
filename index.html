@@ -52,24 +52,57 @@
         h1, h2, h3 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; text-align: center; }
         .question-block { margin-bottom: 35px; }
         .question-block h4 { font-size: 1.1em; margin-bottom: 15px; }
-        pre { background-color: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; font-family: 'Courier New', Courier, monospace; }
+
+        /* MODIFIED PRE STYLE FOR DARK BACKGROUND / LIGHT TEXT */
+        pre {
+            background-color: #0D1117; /* Very dark (GitHub dark mode editor background) */
+            color: #C9D1D9;           /* Light text (GitHub dark mode editor text) */
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; /* Common mono fonts */
+            font-size: 0.9em; /* Slightly smaller for better fit */
+            line-height: 1.5;
+        }
+
         .options { list-style-type: none; padding-left: 0; }
         .options li { margin: 10px 0; }
         .options label { display: block; padding: 10px; background-color: #ecf0f1; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
         .options label:hover { background-color: #d6eaf8; }
         
-        /* This rule might be less critical now but kept for robustness */
+        /* Style for PRE blocks inside option labels (e.g., for code choices) */
         .options label pre {
-            background-color: #f8f9fa !important;
-            color: #212529 !important;
-            border: 1px solid #dee2e6 !important;
+            background-color: #f8f9fa !important; /* A light background for code in options */
+            color: #212529 !important;             /* A dark text color for code in options */
+            border: 1px solid #dee2e6 !important;  /* A subtle border */
             margin-top: 8px;
             padding: 10px;
             text-align: left;
+            font-size: 0.85em; /* Make code in options slightly smaller */
         }
 
         .options input[type="radio"] { margin-right: 10px; vertical-align: middle; }
-        code { font-family: 'Courier New', Courier, monospace; background-color: #e0e0e0; padding: 2px 4px; border-radius: 3px; }
+
+        /* GENERAL INLINE CODE STYLE (e.g. `<code>myVar</code>` in paragraph text) */
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            background-color: #e9ecef; /* Light grey background */
+            color: #2c3e50;             /* Dark text for the light background */
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        /* OVERRIDE FOR CODE TAGS INSIDE PRE TAGS */
+        pre code {
+            background-color: transparent !important; /* Make background transparent to show pre's background */
+            color: inherit !important;                /* Inherit text color from pre (which is light) */
+            padding: 0 !important;                    /* Reset padding */
+            border-radius: 0 !important;              /* Reset border-radius */
+            font-size: inherit !important;            /* Inherit font size from pre */
+            font-family: inherit !important;          /* Inherit font family from pre */
+        }
+
         #submit-btn, #start-quiz-btn { display: block; width: 100%; padding: 15px; font-size: 1.2em; font-weight: bold; color: #fff; background-color: #3498db; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
         #submit-btn:hover, #start-quiz-btn:hover { background-color: #2980b9; }
         #name-input { width: calc(100% - 24px); padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; font-size: 1.1em; }
@@ -326,13 +359,13 @@
       import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
       
       const firebaseConfig = {
-        apiKey: "AIzaSyDYGPni4PdzWOMTg1-zL7klmmMPgrZNn2I", // Replace with your actual Firebase API key
-        authDomain: "to-do-list-84cee.firebaseapp.com", // Replace with your Firebase auth domain
-        databaseURL: "https://to-do-list-84cee-default-rtdb.firebaseio.com", // Replace with your Firebase database URL
-        projectId: "to-do-list-84cee", // Replace with your Firebase project ID
-        storageBucket: "to-do-list-84cee.firebasestorage.app", // Replace with your Firebase storage bucket
-        messagingSenderId: "623916391670", // Replace with your Firebase messaging sender ID
-        appId: "1:623916391670:web:af46cbb278d2fac6f060d7" // Replace with your Firebase app ID
+        apiKey: "YOUR_API_KEY", // Replace with your actual Firebase API key
+        authDomain: "YOUR_AUTH_DOMAIN", // Replace with your Firebase auth domain
+        databaseURL: "YOUR_DATABASE_URL", // Replace with your Firebase database URL
+        projectId: "YOUR_PROJECT_ID", // Replace with your Firebase project ID
+        storageBucket: "YOUR_STORAGE_BUCKET", // Replace with your Firebase storage bucket
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID", // Replace with your Firebase messaging sender ID
+        appId: "YOUR_APP_ID" // Replace with your Firebase app ID
       };
 
       const app = initializeApp(firebaseConfig);
@@ -414,24 +447,20 @@
               let userAnswerText = "<em>Not Answered</em>";
               if (userAnswers[qId] !== "Not Answered") {
                   const label = block.querySelector(`input[value="${userAnswers[qId]}"]`).parentElement;
-                  const labelClone = label.cloneNode(true); // Clone to avoid modifying original DOM
-                  labelClone.removeChild(labelClone.querySelector('input')); // Remove radio button from clone
+                  const labelClone = label.cloneNode(true); 
+                  labelClone.removeChild(labelClone.querySelector('input')); 
                   
-                  // If option label contains a <pre> block for code options, remove it for concise display
                   const preInLabel = labelClone.querySelector('pre');
                   if (preInLabel) {
                     labelClone.removeChild(preInLabel); 
                   }
-                  // Clean up potentially remaining text from multi-line options
-                  let textContent = labelClone.innerHTML.replace(/<br\s*\/?>/gi, " ").trim(); // Replace <br> with space
-                  // remove the "a) ", "b) " prefix
+                  let textContent = labelClone.innerHTML.replace(/<br\s*\/?>/gi, " ").trim(); 
                   textContent = textContent.replace(/^[a-d]\)\s*/, ''); 
                   userAnswerText = `<code>${textContent}</code>`;
               }
 
-              // Get the question text. For questions with main code block, get h4 + the p tag if it exists.
               let questionFullText = block.querySelector('h4').innerHTML;
-              const questionPara = block.querySelector('h4 + p, h4 + pre + p'); // p after h4 or after h4+pre
+              const questionPara = block.querySelector('h4 + p, h4 + pre + p'); 
               if (questionPara) {
                   questionFullText += '<br>' + questionPara.innerHTML;
               }
@@ -475,7 +504,6 @@
               adminResultsBody.innerHTML = '';
               if (snapshot.exists()) {
                   const data = snapshot.val();
-                  // Sort by timestamp descending (newest first)
                   const resultsArray = Object.entries(data).sort((a, b) => new Date(b[1].timestamp) - new Date(a[1].timestamp));
 
                   resultsArray.forEach(([key, result]) => {
