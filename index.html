@@ -3,543 +3,571 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Java Quiz App - Functions</title>
+    <title>Success Squad: Assessment Portal</title>
     <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #818cf8;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #1f2937;
+            --selected: #e0e7ff;
+            --selected-border: #4338ca;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f4f7f9;
-            color: #333;
-            line-height: 1.6;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             margin: 0;
-            padding: 0;
-        }
-        nav {
-            background-color: #2c3e50;
-            padding: 10px 40px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        nav button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.3s;
-        }
-        nav button:hover {
-            background-color: #2980b9;
-        }
-        .main-content {
             padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            user-select: none; /* Disables text selection (basic copy protection) */
         }
+
         .container {
-            max-width: 800px;
+            background: var(--card);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
             width: 100%;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 20px 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            text-align: center;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
         }
-        h1, h2, h3 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; text-align: center; }
-        .question-block { margin-bottom: 35px; }
-        .question-block h4 { font-size: 1.1em; margin-bottom: 15px; }
 
-        /* MODIFIED PRE STYLE FOR DARK BACKGROUND / LIGHT TEXT */
-        pre {
-            background-color: #0D1117; /* Very dark (GitHub dark mode editor background) */
-            color: #C9D1D9;           /* Light text (GitHub dark mode editor text) */
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--primary); font-weight: 800; }
+        h3 { font-weight: 400; color: #6b7280; font-size: 1rem; margin-bottom: 2rem; }
+
+        .progress-bar-bg {
+            width: 100%;
+            background-color: #e5e7eb;
+            border-radius: 99px;
+            height: 8px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+            color: #111827;
+        }
+
+        .scenario-box {
+            background: #eef2ff;
+            border-left: 5px solid var(--primary);
+            color: #3730a3;
             padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; /* Common mono fonts */
-            font-size: 0.9em; /* Slightly smaller for better fit */
-            line-height: 1.5;
-        }
-
-        .options { list-style-type: none; padding-left: 0; }
-        .options li { margin: 10px 0; }
-        .options label { display: block; padding: 10px; background-color: #ecf0f1; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
-        .options label:hover { background-color: #d6eaf8; }
-        
-        /* Style for PRE blocks inside option labels (e.g., for code choices) */
-        .options label pre {
-            background-color: #f8f9fa !important; /* A light background for code in options */
-            color: #212529 !important;             /* A dark text color for code in options */
-            border: 1px solid #dee2e6 !important;  /* A subtle border */
-            margin-top: 8px;
-            padding: 10px;
-            text-align: left;
-            font-size: 0.85em; /* Make code in options slightly smaller */
-        }
-
-        .options input[type="radio"] { margin-right: 10px; vertical-align: middle; }
-
-        /* GENERAL INLINE CODE STYLE (e.g. `<code>myVar</code>` in paragraph text) */
-        code {
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-            background-color: #e9ecef; /* Light grey background */
-            color: #2c3e50;             /* Dark text for the light background */
-            padding: 3px 6px;
             border-radius: 4px;
-            font-size: 0.9em;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 0.95rem;
+            font-style: italic;
+            display: none;
         }
 
-        /* OVERRIDE FOR CODE TAGS INSIDE PRE TAGS */
-        pre code {
-            background-color: transparent !important; /* Make background transparent to show pre's background */
-            color: inherit !important;                /* Inherit text color from pre (which is light) */
-            padding: 0 !important;                    /* Reset padding */
-            border-radius: 0 !important;              /* Reset border-radius */
-            font-size: inherit !important;            /* Inherit font size from pre */
-            font-family: inherit !important;          /* Inherit font family from pre */
+        .options-grid {
+            display: grid;
+            gap: 12px;
         }
 
-        #submit-btn, #start-quiz-btn { display: block; width: 100%; padding: 15px; font-size: 1.2em; font-weight: bold; color: #fff; background-color: #3498db; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
-        #submit-btn:hover, #start-quiz-btn:hover { background-color: #2980b9; }
-        #name-input { width: calc(100% - 24px); padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; font-size: 1.1em; }
-        #results-list { list-style-type: none; padding: 0; }
-        #results-list li { padding: 15px; border-radius: 5px; margin-bottom: 15px; border-left: 5px solid #ccc; }
-        .correct { border-left-color: #28a745; background-color: #d4edda; }
-        .incorrect { border-left-color: #dc3545; background-color: #f8d7da; }
-        .explanation { margin-top: 15px; padding-top: 10px; border-top: 1px solid #bdc3c7; font-size: 0.95em; }
-        .explanation strong { color: #2c3e50; }
-        /* Admin Page Styles */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px 15px; border: 1px solid #ddd; text-align: left; }
-        th { background-color: #2c3e50; color: #fff; }
-        tbody tr:nth-child(even) { background-color: #f2f2f2; }
-        #admin-status { text-align: center; font-style: italic; color: #7f8c8d; }
-        .delete-btn {
-            background-color: #e74c3c;
+        .btn {
+            background: white;
+            border: 2px solid #e5e7eb;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            width: 100%;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .btn:hover {
+            border-color: var(--secondary);
+            background-color: #f9fafb;
+        }
+
+        .btn.selected {
+            background-color: var(--selected);
+            border-color: var(--selected-border);
+            color: #312e81;
+            font-weight: 700;
+        }
+
+        .controls {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 50px;
+        }
+
+        .action-btn {
+            background-color: var(--primary);
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
+            padding: 12px 30px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+            transition: background 0.2s;
         }
-        .delete-btn:hover { background-color: #c0392b; }
+        
+        .action-btn:hover { background-color: #4338ca; }
+        .action-btn:disabled { background-color: #9ca3af; cursor: not-allowed; }
+
+        .hidden { display: none; }
+
+        /* Input Styles */
+        .input-group { margin-bottom: 2rem; text-align: left; }
+        .input-label { display: block; margin-bottom: 8px; font-weight: 600; color: #374151; }
+        .text-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box; 
+        }
+        .text-input:focus { outline: none; border-color: var(--primary); }
+
+        /* Review Section Styles */
+        .review-list {
+            text-align: left;
+            margin-top: 2rem;
+            border-top: 2px solid #e5e7eb;
+            padding-top: 1rem;
+        }
+
+        .review-item {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .review-q { font-weight: 700; margin-bottom: 8px; font-size: 1rem; }
+        .review-ans { font-size: 0.9rem; margin-bottom: 4px; }
+        .review-correct { color: var(--success); font-weight: 600; }
+        .review-wrong { color: var(--error); font-weight: 600; text-decoration: line-through; }
+
+        .score-display {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #f3f4f6;
+            color: #6b7280;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        /* Warning Banner */
+        .violation-banner {
+            background-color: var(--warning);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            display: none;
+            animation: pulse 2s infinite;
+        }
+
+        .cheat-detected {
+            color: var(--error);
+            font-weight: bold;
+            border: 2px solid var(--error);
+            padding: 15px;
+            border-radius: 8px;
+            background: #fef2f2;
+            margin-bottom: 20px;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
-    <nav>
-        <button id="nav-quiz">Take Quiz</button>
-        <button id="nav-admin">View Admin Panel</button>
-    </nav>
-    <div class="main-content">
-        <!-- Name Container -->
-        <div class="container view" id="name-container">
-            <h1>Welcome to the Java Functions Quiz</h1>
-            <p>Please enter your name to begin.</p>
-            <input type="text" id="name-input" placeholder="Your Name" required>
-            <button id="start-quiz-btn">Start Quiz</button>
+
+<div class="container">
+    <!-- Start Screen -->
+    <div id="start-screen">
+        <!-- HEADER CHANGED HERE -->
+        <h1>Success Squad</h1>
+        <h3>Advanced Logic & Strategy Assessment</h3>
+        
+        <div class="input-group">
+            <label class="input-label">Enter Full Name</label>
+            <input type="text" id="candidate-name" class="text-input" placeholder="John Doe">
         </div>
 
-        <!-- Quiz Container -->
-        <div class="container view" id="quiz-container" style="display: none;">
-            <h1>Java Functions Quiz</h1>
-            <form id="quiz-form">
-                <!-- Question 1 -->
-                <div class="question-block" data-question-id="q1">
-                    <h4>Question 1: Consider the following Java code:</h4>
-                    <pre><code>class Calculator {
-    public void addAndPrint(int a, int b) {
-        int sum = a + b;
-        System.out.println("Sum: " + sum);
-    }
-
-    public static void main(String[] args) {
-        Calculator calc = new Calculator();
-        // Line X
-    }
-}</code></pre>
-                    <p>Which of the following, if placed at <code>// Line X</code>, would be a valid way to call the <code>addAndPrint</code> method and what would be its logical outcome?</p>
-                    <ul class="options">
-                        <li><label><input type="radio" name="q1" value="a"> a) <code>int result = calc.addAndPrint(5, 3);</code> - This is valid and <code>result</code> will be 8.</label></li>
-                        <li><label><input type="radio" name="q1" value="b"> b) <code>calc.addAndPrint(5, 3);</code> - This is valid and "Sum: 8" will be printed to the console.</label></li>
-                        <li><label><input type="radio" name="q1" value="c"> c) <code>Calculator.addAndPrint(5, 3);</code> - This is valid because <code>main</code> is static.</label></li>
-                        <li><label><input type="radio" name="q1" value="d"> d) <code>addAndPrint(5, 3);</code> - This is valid as it's in the same class.</label></li>
-                    </ul>
-                </div>
-                
-                <!-- Question 2 -->
-                <div class="question-block" data-question-id="q2">
-                    <h4>Question 2: What is the primary logical implication of a Java method being declared as <code>static</code>?</h4>
-                    <ul class="options">
-                        <li><label><input type="radio" name="q2" value="a"> a) The method can only be called by other <code>static</code> methods.</label></li>
-                        <li><label><input type="radio" name="q2" value="b"> b) The method operates on an instance of the class and can access instance variables directly.</label></li>
-                        <li><label><input type="radio" name="q2" value="c"> c) The method belongs to the class itself, not to any specific instance of the class, and is typically called using the class name.</label></li>
-                        <li><label><input type="radio" name="q2" value="d"> d) The method cannot be overloaded.</label></li>
-                    </ul>
-                </div>
-                
-                <!-- Question 3 -->
-                <div class="question-block" data-question-id="q3">
-                    <h4>Question 3: Given the Java code:</h4>
-                    <pre><code>class ValueChanger {
-    public void modify(int x) {
-        x = x + 10;
-        System.out.println("Inside method: " + x);
-    }
-
-    public static void main(String[] args) {
-        ValueChanger vc = new ValueChanger();
-        int num = 5;
-        vc.modify(num);
-        System.out.println("Outside method: " + num);
-    }
-}</code></pre>
-                    <p>What will be the output?</p>
-                    <ul class="options">
-                        <li><label><input type="radio" name="q3" value="a"> a) Inside method: 15<br>   Outside method: 15</label></li>
-                        <li><label><input type="radio" name="q3" value="b"> b) Inside method: 15<br>   Outside method: 5</label></li>
-                        <li><label><input type="radio" name="q3" value="c"> c) Inside method: 5<br>   Outside method: 5</label></li>
-                        <li><label><input type="radio" name="q3" value="d"> d) The code will produce a compile-time error.</label></li>
-                    </ul>
-                </div>
-                
-                <!-- Question 4 -->
-                <div class="question-block" data-question-id="q4">
-                    <h4>Question 4: Consider this Java code snippet:</h4>
-                    <pre><code>class MyArrayChanger {
-    public void changeFirstElement(int[] arr) {
-        if (arr != null && arr.length > 0) {
-            arr[0] = 99;
-        }
-    }
-
-    public static void main(String[] args) {
-        MyArrayChanger mac = new MyArrayChanger();
-        int[] myArray = {10, 20, 30};
-        mac.changeFirstElement(myArray);
-        System.out.println(myArray[0]);
-    }
-}</code></pre>
-                    <p>What will be printed to the console?</p>
-                    <ul class="options">
-                        <li><label><input type="radio" name="q4" value="a"> a) 10</label></li>
-                        <li><label><input type="radio" name="q4" value="b"> b) 99</label></li>
-                        <li><label><input type="radio" name="q4" value="c"> c) 0</label></li>
-                        <li><label><input type="radio" name="q4" value="d"> d) An ArrayIndexOutOfBoundsException will be thrown.</label></li>
-                    </ul>
-                </div>
-                
-                <!-- Question 5 -->
-                <div class="question-block" data-question-id="q5">
-                    <h4>Question 5: If a Java method is declared with a <code>void</code> return type, what does this logically signify?</h4>
-                    <ul class="options">
-                        <li><label><input type="radio" name="q5" value="a"> a) The method must return a <code>null</code> value.</label></li>
-                        <li><label><input type="radio" name="q5" value="b"> b) The method performs an action but does not return any value to its caller.</label></li>
-                        <li><label><input type="radio" name="q5" value="c"> c) The method can optionally return a value, but it's not required.</label></li>
-                        <li><label><input type="radio" name="q5" value="d"> d) The method can only contain <code>System.out.println()</code> statements.</label></li>
-                    </ul>
-                </div>
-                
-                <!-- Question 6 -->
-                <div class="question-block" data-question-id="q6">
-                    <h4>Question 6: Consider the following overloaded methods in a class <code>Printer</code>:</h4>
-                    <pre><code>class Printer {
-    public void print(int i) {
-        System.out.println("Integer: " + i);
-    }
-    public void print(String s) {
-        System.out.println("String: " + s);
-    }
-    public void print(double d) {
-        System.out.println("Double: " + d);
-    }
-}</code></pre>
-                    <p>If the following call is made: <code>new Printer().print(5.0f);</code> (where <code>5.0f</code> is a float literal), which method will be invoked?</p>
-                    <ul class="options">
-                        <li><label><input type="radio" name="q6" value="a"> a) <code>print(int i)</code> due to implicit conversion.</label></li>
-                        <li><label><input type="radio" name="q6" value="b"> b) <code>print(String s)</code> because float can be converted to String.</label></li>
-                        <li><label><input type="radio" name="q6" value="c"> c) <code>print(double d)</code> due to widening primitive conversion.</label></li>
-                        <li><label><input type="radio" name="q6" value="d"> d) The code will result in a compile-time error because no exact match for <code>float</code> exists.</label></li>
-                    </ul>
-                </div>
-                
-                <!-- Question 7 -->
-                <div class="question-block" data-question-id="q7">
-                    <h4>Question 7: What is the logical purpose of the <code>return</code> keyword within a Java method that is NOT <code>void</code>?</h4>
-                    <ul class="options">
-                        <li><label><input type="radio" name="q7" value="a"> a) To terminate the method's execution immediately, regardless of whether a value is provided.</label></li>
-                        <li><label><input type="radio" name="q7" value="b"> b) To pass a specific value back to the code that called the method.</label></li>
-                        <li><label><input type="radio" name="q7" value="c"> c) To indicate that the method has completed successfully.</label></li>
-                        <li><label><input type="radio" name="q7" value="d"> d) To print a value to the console before exiting the method.</label></li>
-                    </ul>
-                </div>
-
-                <!-- Question 8 -->
-                <div class="question-block" data-question-id="q8">
-                    <h4>Question 8: Examine the recursive Java function:</h4>
-                    <pre><code>class Recur {
-    public int calculate(int n) {
-        if (n <= 0) {
-            return 0;
-        }
-        return n + calculate(n - 2);
-    }
-
-    public static void main(String[] args) {
-        Recur r = new Recur();
-        System.out.println(r.calculate(5));
-    }
-}</code></pre>
-                    <p>What will be the output of <code>r.calculate(5)</code>?</p>
-                    <ul class="options">
-                        <li><label><input type="radio" name="q8" value="a"> a) 0</label></li>
-                        <li><label><input type="radio" name="q8" value="b"> b) 5</label></li>
-                        <li><label><input type="radio" name="q8" value="c"> c) 9 (5 + 3 + 1)</label></li>
-                        <li><label><input type="radio" name="q8" value="d"> d) 15 (5 + 4 + 3 + 2 + 1)</label></li>
-                    </ul>
-                </div>
-
-                <!-- Question 9 -->
-                <div class="question-block" data-question-id="q9">
-                    <h4>Question 9: Consider a method signature: <code>public String processData(String input, int count)</code><br>What defines the "signature" of this method, primarily for purposes like overloading?</h4>
-                    <ul class="options">
-                        <li><label><input type="radio" name="q9" value="a"> a) <code>public String processData</code></label></li>
-                        <li><label><input type="radio" name="q9" value="b"> b) <code>processData</code></label></li>
-                        <li><label><input type="radio" name="q9" value="c"> c) <code>processData(String, int)</code></label></li>
-                        <li><label><input type="radio" name="q9" value="d"> d) <code>String processData(String input, int count)</code></label></li>
-                    </ul>
-                </div>
-
-                <!-- Question 10 -->
-                <div class="question-block" data-question-id="q10">
-                    <h4>Question 10: If a variable is declared inside a method in Java (e.g., <code>int temp = 10;</code>), what is its scope?</h4>
-                    <ul class="options">
-                        <li><label><input type="radio" name="q10" value="a"> a) It is accessible from anywhere within the class.</label></li>
-                        <li><label><input type="radio" name="q10" value="b"> b) It is accessible only within that method, from the point of declaration to the end of the method's block.</label></li>
-                        <li><label><input type="radio" name="q10" value="c"> c) It is accessible by any method called from the current method.</label></li>
-                        <li><label><input type="radio" name="q10" value="d"> d) It is accessible globally throughout the entire application.</label></li>
-                    </ul>
-                </div>
-
-                <button type="submit" id="submit-btn">Submit Quiz</button>
-            </form>
+        <div style="text-align: left; background: #fffbeb; border: 1px solid #fcd34d; padding: 15px; border-radius: 8px; margin-bottom: 20px; color: #92400e; font-size: 0.9rem;">
+            <strong>⚠️ Compliance Rules:</strong>
+            <ul style="margin: 5px 0 0 0; padding-left: 20px;">
+                <li>Do not switch tabs or minimize the browser.</li>
+                <li>Leaving the page <strong>3 times</strong> will auto-submit your test.</li>
+                <li>You cannot retake this assessment.</li>
+            </ul>
         </div>
 
-        <!-- Results and Admin Containers + Script -->
-        <div class="container view" id="results-container" style="display: none;">
-            <h2 id="result-header"></h2>
-            <p id="score-text" style="text-align: center; font-size: 1.2em;"></p>
-            <p id="firebase-status" style="text-align: center; font-style: italic;"></p>
-            <h3>Answer Key & Explanations</h3>
-            <ul id="results-list"></ul>
+        <button class="action-btn" onclick="startQuiz()">Start Assessment</button>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="hidden">
+        <div id="violation-msg" class="violation-banner">Warning: Tab Switch Detected!</div>
+
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-bar"></div>
         </div>
-        <div class="container view" id="admin-container" style="display: none;">
-            <h1>Quiz Admin Results</h1>
-            <p id="admin-status">Loading results from Firebase...</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Score</th>
-                        <th>Date & Time</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="admin-results-body">
-                </tbody>
-            </table>
+        
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; color: #6b7280;">
+            <span id="question-count">Q 1/70</span>
+            <span id="category-tag" class="tag">Terminology</span>
+        </div>
+        
+        <div id="scenario-box" class="scenario-box"></div>
+        <div class="question-text" id="question-text"></div>
+        
+        <div class="options-grid" id="options-container"></div>
+
+        <div class="controls">
+            <button id="next-btn" class="action-btn hidden" onclick="nextQuestion()">Next Question &rarr;</button>
         </div>
     </div>
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-      import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-      
-      const firebaseConfig = {
-        apiKey: "YOUR_API_KEY", // Replace with your actual Firebase API key
-        authDomain: "YOUR_AUTH_DOMAIN", // Replace with your Firebase auth domain
-        databaseURL: "YOUR_DATABASE_URL", // Replace with your Firebase database URL
-        projectId: "YOUR_PROJECT_ID", // Replace with your Firebase project ID
-        storageBucket: "YOUR_STORAGE_BUCKET", // Replace with your Firebase storage bucket
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID", // Replace with your Firebase messaging sender ID
-        appId: "YOUR_APP_ID" // Replace with your Firebase app ID
-      };
 
-      const app = initializeApp(firebaseConfig);
-      const database = getDatabase(app);
-      const allViews = document.querySelectorAll('.view');
-      const nameInput = document.getElementById('name-input');
-      const quizForm = document.getElementById('quiz-form');
-      let userName = '';
-      
-      const answerKey = {
-        q1: { answer: 'b', explanation: '`addAndPrint` is a `void` method, so it doesn\'t return a value to assign. It\'s an instance method, so it needs an instance (`calc`) to be called. Option b correctly calls the method and describes its side effect (printing).' },
-        q2: { answer: 'c', explanation: 'Static methods are associated with the class, not instances. They cannot directly access instance variables or methods (unless an instance is passed to them). They are typically invoked using `ClassName.methodName()`.' },
-        q3: { answer: 'b', explanation: 'Java passes primitive types (like int) by value. This means a copy of `num` is passed to the `modify` method. Changes to the parameter `x` inside `modify` do not affect the original `num` variable in `main`.' },
-        q4: { answer: 'b', explanation: 'In Java, object references (like array references) are passed by value. This means the method receives a copy of the reference, but this copied reference still points to the *same* array object in memory. Therefore, modifications to the array\'s contents within the method are visible outside the method.' },
-        q5: { answer: 'b', explanation: 'The `void` keyword explicitly means that the method does not return any value to the calling code. It performs its operations and then control returns to the caller without passing back data.' },
-        q6: { answer: 'c', explanation: 'Java\'s method overloading resolution first looks for an exact match. If not found, it tries widening primitive conversions (e.g., `byte` to `short` to `int` to `long` to `float` to `double`). Since `5.0f` is a float, it can be widened to `double`, so `print(double d)` is called.' },
-        q7: { answer: 'b', explanation: 'In a non-void method, the `return` statement is used to send a value of the method\'s declared return type back to the caller. The method execution also terminates at the return statement.' },
-        q8: { answer: 'c', explanation: 'The recursion unfolds as: calculate(5) = 5 + calculate(3); calculate(3) = 3 + calculate(1); calculate(1) = 1 + calculate(-1); calculate(-1) = 0. So, it becomes 5 + (3 + (1 + 0)) = 5 + 3 + 1 = 9.' },
-        q9: { answer: 'c', explanation: 'In Java, the method signature consists of the method name and the sequence of its parameter types (and their order). The return type and access modifiers are not part of the signature for overloading purposes.' },
-        q10: { answer: 'b', explanation: 'Variables declared inside a method are local variables. Their scope is limited to the block in which they are declared, typically from the point of declaration until the closing curly brace `}` of the method or block.' }
-      };
-      const totalQuestions = Object.keys(answerKey).length;
-      
-      function showView(viewId) {
-          allViews.forEach(view => {
-              view.style.display = view.id === viewId ? 'block' : 'none';
-          });
-      }
+    <!-- Result Screen -->
+    <div id="result-screen" class="hidden">
+        <h1>Assessment Complete</h1>
+        <p>Candidate: <strong id="result-name"></strong></p>
+        
+        <div id="cheat-alert-box" class="hidden"></div>
 
-      document.getElementById('nav-quiz').addEventListener('click', () => {
-        quizForm.reset();
-        document.getElementById('name-input').value = ''; // Clear name input as well
-        showView('name-container');
-      });
-      document.getElementById('nav-admin').addEventListener('click', () => {
-        showView('admin-container');
-        loadAdminResults();
-      });
+        <p>Final Score</p>
+        <div class="score-display"><span id="final-score">0</span><span style="font-size: 2rem; color:#9ca3af;">/70</span></div>
+        <div id="message" style="font-size: 1.2rem; margin-bottom: 2rem; font-weight: 500;"></div>
+        
+        <!-- Retake button removed -->
+        
+        <h3 style="margin-top: 30px; text-align: left;">Detailed Review:</h3>
+        <div id="review-container" class="review-list"></div>
+    </div>
+</div>
 
-      document.getElementById('start-quiz-btn').addEventListener('click', () => {
-          userName = nameInput.value.trim();
-          if (userName) {
-              showView('quiz-container');
-          } else {
-              alert('Please enter your name.');
-          }
-      });
+<script>
+    const questionBank = [
+        // --- Section A: Terminology ---
+        { q: "What is a 'Liquidation Preference'?", options: ["Employee firing order", "Office closing process", "Investor payout priority", "Debt repayment plan"], ans: 2, cat: "Legal" },
+        { q: "What is a 'SAFE Note' (Y Combinator)?", options: ["Secure Asset for Earnings", "Simple Agreement for Equity", "Safe Allocation for Exit", "Standard Account for Entry"], ans: 1, cat: "Legal" },
+        { q: "What does 'Drag-Along Rights' allow?", options: ["Majority forces minority sale", "Investors block the sale", "Minority forces majority sale", "Founders force sale of shares"], ans: 0, cat: "Legal" },
+        { q: "What is a 'Vesting Cliff'?", options: ["The date an investor can exit", "A steep drop in stock price", "Maximum limit of stock value", "A specific time before equity grants"], ans: 3, cat: "Legal" },
+        { q: "What is the 'Rule of 40' in SaaS?", options: ["Team size must be under 40", "Revenue must grow 40% MoM", "Growth rate + Profit % > 40", "Costs must be under 40%"], ans: 2, cat: "SaaS Metrics" },
+        { q: "What is a 'Down Round'?", options: ["Closing a branch office", "Reducing the staff count", "Raising at lower valuation", "Lowering product prices"], ans: 2, cat: "Funding" },
+        { q: "What is 'Product Cannibalization'?", options: ["Competitor steals market", "New product eats old sales", "Marketing cost eating profit", "Staff stealing the ideas"], ans: 1, cat: "Strategy" },
+        { q: "Difference between 'Alpha' and 'Beta' testing:", options: ["Alpha is paid; Beta is free", "Alpha is internal; Beta is external", "Alpha is final; Beta is rough", "Alpha is iOS; Beta is Android"], ans: 1, cat: "Product" },
+        { q: "What is a 'Term Sheet' legally?", options: ["Always a binding contract", "A final employment letter", "A government tax document", "Usually non-binding offer"], ans: 3, cat: "Legal" },
+        { q: "What is 'Ratchet Protection'?", options: ["Protects founders from firing", "Protects IP from copying", "Protects investors from dilution", "Protects office from theft"], ans: 2, cat: "Legal" },
+        { q: "TAM, SAM, SOM refers to:", options: ["Employee name codes", "Market sizing metrics", "Marketing ad channels", "Coding language types"], ans: 1, cat: "Strategy" },
+        { q: "What is 'Arbitrage'?", options: ["Buying low, selling high elsewhere", "Illegally trading stock info", "Merging two companies", "Creating a monopoly"], ans: 0, cat: "Finance" },
+        { q: "What is a 'Cap Table'?", options: ["Limit on maximum salary", "List of office assets", "Table of ownership %", "Marketing budget cap"], ans: 2, cat: "Finance" },
+        { q: "Pre-Money Valuation Formula:", options: ["Post-Money plus Investment", "Post-Money minus Investment", "Investment times Equity", "Revenue times Multiplier"], ans: 1, cat: "Finance" },
+        { q: "What is 'Blind Trust'?", options: ["Trusting a partner blindly", "Assets managed without owner input", "Investing without a contract", "Hiring staff without interview"], ans: 1, cat: "Legal" },
 
-      quizForm.addEventListener('submit', (event) => {
-          event.preventDefault();
-          let score = 0;
-          const userAnswers = {};
-          for (const qId in answerKey) {
-              const selectedOption = quizForm.querySelector(`input[name="${qId}"]:checked`);
-              if (selectedOption) {
-                  userAnswers[qId] = selectedOption.value;
-                  if (selectedOption.value === answerKey[qId].answer) score++;
-              } else {
-                  userAnswers[qId] = "Not Answered";
-              }
-          }
-          displayResults(score, userAnswers);
-          saveResultsToFirebase(userName, score);
-      });
+        // --- Section B: Logic ---
+        { q: "Your LTV:CAC ratio is 1:1. What do you do?", options: ["Scale ad spend aggressively", "Hire more sales managers", "Launch an IPO quickly", "Stop paid marketing immediately"], ans: 3, cat: "Logic" },
+        { q: "A competitor copies your feature. Best response?", options: ["Sue them immediately", "Focus on execution & speed", "Remove the feature", "Complain on Twitter"], ans: 1, cat: "Strategy" },
+        { q: "You have High Churn but High Growth. The risk is:", options: ["Too much revenue to manage", "Investors will be too happy", "Leaky bucket (unsustainable)", "Competitors will give up"], ans: 2, cat: "Metrics" },
+        { q: "Crossing the Chasm refers to moving from:", options: ["Early Adopters to Majority", "Idea stage to MVP stage", "Seed round to Series A", "Loss making to Profit"], ans: 0, cat: "Strategy" },
+        { q: "An investor asks for a Board Seat. This means:", options: ["They get a free office desk", "They get voting control/power", "They want to be an intern", "They want free lunch"], ans: 1, cat: "Governance" },
+        { q: "You are Pre-Revenue. How do you value the firm?", options: ["Last year's profit audit", "The competitor's debt", "Team, Idea, and Potential", "The price of your laptop"], ans: 2, cat: "Valuation" },
+        { q: "Pareto Principle (80/20) in sales usually means:", options: ["80% of profit is tax free", "80% of revenue from 20% clients", "80% of staff do 20% work", "80% of emails are spam"], ans: 1, cat: "Sales" },
+        { q: "Blitzscaling prioritizes:", options: ["Safety over risk", "Profit over growth", "Speed over efficiency", "Brand over sales"], ans: 2, cat: "Growth" },
+        { q: "If your K-Factor (Viral Co-efficient) is > 1.0:", options: ["Growth is declining", "Growth is exponential", "Users hate the app", "Marketing is failing"], ans: 1, cat: "Metrics" },
+        { q: "A 'Pivot' is usually driven by:", options: ["Boredom with the idea", "Competitors doing well", "Founder wanting change", "Data proving current failure"], ans: 3, cat: "Strategy" },
 
-      function displayResults(score, userAnswers) {
-          showView('results-container');
-          document.getElementById('result-header').textContent = `Results for ${userName}`;
-          document.getElementById('score-text').innerHTML = `You scored <strong>${score}</strong> out of <strong>${totalQuestions}</strong>.`;
-          
-          const resultsList = document.getElementById('results-list');
-          resultsList.innerHTML = ''; 
+        // --- Section C: Case Studies ---
+        { q: "The most likely problem is:", scenario: "CASE: SaaS Co has high signups but users drop off after 14 days.", options: ["Price is too expensive", "The logo is ugly", "Poor onboarding experience", "Server is too fast"], ans: 2, cat: "Case Study" },
+        { q: "Which metric should they track most?", scenario: "CASE: SaaS Co has high signups but users drop off after 14 days.", options: ["Twitter mentions", "Activation Rate", "Total site hits", "Employee count"], ans: 1, cat: "Case Study" },
+        { q: "To fix this, they should prioritize:", scenario: "CASE: SaaS Co has high signups but users drop off after 14 days.", options: ["Buying more Facebook ads", "Customer Success/Education", "Hiring a new CFO", "Redesigning the lobby"], ans: 1, cat: "Case Study" },
+        { q: "This is known as the:", scenario: "CASE: Marketplace connects dog walkers with owners. Many walkers, no owners.", options: ["Dead Cow problem", "Chicken and Egg problem", "Sleeping Dog issue", "Golden Goose issue"], ans: 1, cat: "Case Study" },
+        { q: "The best supply-demand fix is:", scenario: "CASE: Marketplace connects dog walkers with owners. Many walkers, no owners.", options: ["Hire more dog walkers", "Subsidize/Focus on demand side", "Raise the price for owners", "Build a cat app instead"], ans: 1, cat: "Case Study" },
+        { q: "This offer is considered:", scenario: "CASE: Founder has 3 months cash. VC offers cash but wants 50% equity.", options: ["Standard market rate", "A very generous gift", "Predatory / Very expensive", "Illegal in most countries"], ans: 2, cat: "Case Study" },
+        { q: "If Founder refuses, the alternative is:", scenario: "CASE: Founder has 3 months cash. VC offers cash but wants 50% equity.", options: ["Hiring more staff quickly", "Starting a second office", "Buying a new domain", "Bridge Round / Convertible Note"], ans: 3, cat: "Case Study" },
+        { q: "What is the profit per unit?", scenario: "CASE: Sell box for $100. COGS $80. Ad Cost $30.", options: ["+$20 (Profit)", "-$10 (Loss)", "+$10 (Profit)", "+$50 (Profit)"], ans: 1, cat: "Case Study" },
+        { q: "To become profitable, you must:", scenario: "CASE: Sell box for $100. COGS $80. Ad Cost $30.", options: ["Lower the selling price", "Increase the COGS", "Increase LTV or lower CAC", "Spend more on ads"], ans: 2, cat: "Case Study" },
 
-          document.querySelectorAll('.question-block').forEach(block => {
-              const qId = block.getAttribute('data-question-id');
-              const li = document.createElement('li');
-              li.className = userAnswers[qId] === answerKey[qId].answer ? 'correct' : 'incorrect';
-              
-              let userAnswerText = "<em>Not Answered</em>";
-              if (userAnswers[qId] !== "Not Answered") {
-                  const label = block.querySelector(`input[value="${userAnswers[qId]}"]`).parentElement;
-                  const labelClone = label.cloneNode(true); 
-                  labelClone.removeChild(labelClone.querySelector('input')); 
-                  
-                  const preInLabel = labelClone.querySelector('pre');
-                  if (preInLabel) {
-                    labelClone.removeChild(preInLabel); 
-                  }
-                  let textContent = labelClone.innerHTML.replace(/<br\s*\/?>/gi, " ").trim(); 
-                  textContent = textContent.replace(/^[a-d]\)\s*/, ''); 
-                  userAnswerText = `<code>${textContent}</code>`;
-              }
+        // --- Section D: Knowledge ---
+        { q: "Who is part of the 'PayPal Mafia'?", options: ["Bill Gates & Steve Jobs", "Elon Musk & Peter Thiel", "Jeff Bezos & Jack Ma", "Mark Zuckerberg & Dorsey"], ans: 1, cat: "History" },
+        { q: "What is Y Combinator?", options: ["A famous startup accelerator", "A complex math formula", "A coding language tool", "A government tax body"], ans: 0, cat: "Ecosystem" },
+        { q: "What happened to Theranos?", options: ["Sold to Google for billions", "Shut down due to fraud", "Is now a top medical firm", "Merged with Pfizer"], ans: 1, cat: "History" },
+        { q: "Which company popularized OKRs?", options: ["McDonald's", "Coca Cola", "Intel / Google", "Blockbuster"], ans: 2, cat: "Management" },
+        { q: "Unicorn = $1B. Decacorn = ?", options: ["$2 Billion", "$50 Billion", "$100 Billion", "$10 Billion"], ans: 3, cat: "Terminology" },
+        { q: "The term 'Moat' was popularized by:", options: ["Elon Musk", "Warren Buffett", "Tim Cook", "Sam Altman"], ans: 1, cat: "History" },
+        { q: "OpenAI started as a:", options: ["Crypto trading bot", "Social media app", "Non-profit research lab", "Video game studio"], ans: 2, cat: "History" },
+        { q: "WeWork failed its first IPO due to:", options: ["Lack of office buildings", "The internet crashing", "Governance & Valuation issues", "Too many customers"], ans: 2, cat: "History" },
+        { q: "Stripe is famous for disrupting:", options: ["Food Delivery", "Hotel Booking", "Taxi Services", "Online Payments"], ans: 3, cat: "History" },
+        { q: "The 'Lean Startup' book is by:", options: ["Tony Stark", "Eric Ries", "Seth Godin", "Phil Knight"], ans: 1, cat: "Books" },
 
-              let questionFullText = block.querySelector('h4').innerHTML;
-              const questionPara = block.querySelector('h4 + p, h4 + pre + p'); 
-              if (questionPara) {
-                  questionFullText += '<br>' + questionPara.innerHTML;
-              }
+        // --- Section E: Finance ---
+        { q: "EBITDA excludes:", options: ["Rent, Salary, Internet", "Interest, Tax, Depreciation", "Marketing, Sales, Ads", "Cost of Goods Sold"], ans: 1, cat: "Finance" },
+        { q: "Operating Leverage means:", options: ["Debt grows faster than cash", "Hiring staff reduces cost", "Revenue equals expenses", "Profit grows faster than revenue"], ans: 3, cat: "Finance" },
+        { q: "Working Capital formula:", options: ["Total Debt + Total Equity", "Current Assets − Current Liabilities", "Net Profit × Tax Rate", "Revenue − Expenses"], ans: 1, cat: "Finance" },
+        { q: "If you raise money, your 'Pie' (share):", options: ["Gets smaller (Dilution)", "Gets larger (Expansion)", "Stays exactly same", "Becomes a square"], ans: 0, cat: "Finance" },
+        { q: "Pro-Rata Rights allow investors to:", options: ["Get their money back first", "Maintain ownership % in future", "Fire the CEO anytime", "Sell shares to public"], ans: 1, cat: "Legal" },
+        { q: "A 'Bridge Round' is used to:", options: ["Build a physical bridge", "Pay for a holiday party", "Reach the next milestone", "Close the company down"], ans: 2, cat: "Funding" },
+        { q: "Venture Debt differs from equity because:", options: ["It requires no repayment", "It is only for banks", "It gives ownership forever", "It must be repaid with interest"], ans: 3, cat: "Finance" },
+        { q: "GMV (Gross Merchandise Value) is:", options: ["Revenue kept by platform", "Profit after all taxes", "Total value of goods sold", "Marketing spend total"], ans: 2, cat: "Metrics" },
+        { q: "Revenue Recognition principle:", options: ["Record when cash is touched", "Record when service is delivered", "Record when contract is signed", "Record when client promises"], ans: 1, cat: "Accounting" },
+        { q: "Unit Economics analyzes:", options: ["The economy of a country", "The total annual profit", "Profit/Loss per single unit", "The stock market trends"], ans: 2, cat: "Metrics" },
+        { q: "Compound Annual Growth Rate (CAGR):", options: ["Highest growth in a month", "Lowest growth in a year", "Smoothed annual growth rate", "Average daily sales"], ans: 2, cat: "Metrics" },
 
+        // --- Section F: Gotcha Questions ---
+        { q: "Revenue is increasing, but Cash Flow is negative. Why?", options: ["Clients pay on 90-day terms", "Expenses are too low", "Margins are too high", "Product is digital"], ans: 0, cat: "Logic" },
+        { q: "You have 100% Market Share. Is this good?", options: ["Yes, it is always perfect", "No, it means zero profit", "Yes, investors love it", "No, invites antitrust/regulation"], ans: 3, cat: "Strategy" },
+        { q: "Survivorship Bias in startups:", options: ["Focusing only on losers", "Focusing on hardware", "Focusing only on winners", "Focusing on the dead"], ans: 2, cat: "Logic" },
+        { q: "Raising Too Much Money can be bad because:", options: ["You can buy too many snacks", "Valuation bar becomes too high", "The bank accounts get full", "Employees get lazy"], ans: 1, cat: "Strategy" },
+        { q: "Founder Vesting protects the company if:", options: ["A founder works hard", "A founder quits early", "The market crashes", "Competitors sue"], ans: 1, cat: "Legal" },
+        { q: "If NPS is -50, it means:", options: ["Customers are detractors", "Customers are promoters", "Product is viral", "Marketing is great"], ans: 0, cat: "Metrics" },
+        { q: "Acqui-hire typically values the firm at:", options: ["100x Revenue multiple", "Price per head (Engineers)", "Brand value only", "Patent value only"], ans: 1, cat: "Exits" },
+        { q: "Information Asymmetry in deals means:", options: ["Both know the same", "No one knows anything", "One side knows more", "Contract is missing"], ans: 2, cat: "Logic" },
+        { q: "Blue Sky in a pitch deck refers to:", options: ["The color of the slides", "The weather forecast", "Sadness in the team", "Future potential/Optimism"], ans: 3, cat: "Pitching" },
+        { q: "Golden Handcuffs keep employees by:", options: ["Unvested stock options", "Physical locked doors", "Legal threats to sue", "Offering free coffee"], ans: 0, cat: "HR" },
+        { q: "A Zombie Startup is one that:", options: ["Is growing extremely fast", "Earns enough to survive only", "Has shut down completely", "Is a horror game studio"], ans: 1, cat: "Terminology" },
+        { q: "Dogfooding means:", options: ["Selling pet supplies", "Using your own product", "Feeding the office dog", "Comparing to competitors"], ans: 1, cat: "Product" },
+        { q: "Growth Hacking usually implies:", options: ["Illegal computer hacking", "Buying expensive billboards", "Creative, low-cost strategies", "Hiring expensive consultants"], ans: 2, cat: "Growth" },
+        { q: "Escrow is money held by:", options: ["The CEO personally", "A neutral third party", "The intern's account", "The customer's bank"], ans: 1, cat: "Finance" },
+        { q: "The Bus Factor measures risk if:", options: ["The bus arrives late", "Transport costs rise", "The office moves far", "Key members disappear"], ans: 3, cat: "HR" }
+    ];
 
-              li.innerHTML = `
-                  <p><strong>${questionFullText}</strong></p>
-                  <p>Your answer: ${userAnswerText}</p>
-                  <div class="explanation"><strong>Explanation:</strong> ${answerKey[qId].explanation}</div>
-              `;
-              resultsList.appendChild(li);
-          });
-      }
+    // ---------------------------------------------------------
+    // APP LOGIC
+    // ---------------------------------------------------------
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let shuffledQuestions = [];
+    let userSelections = [];
+    let candidateName = "";
+    let violationCount = 0;
+    let isQuizActive = false;
 
-      function saveResultsToFirebase(name, score) {
-          const statusEl = document.getElementById('firebase-status');
-          statusEl.textContent = "Saving results...";
-          const resultsRef = ref(database, 'quizResults');
-          const newResultRef = push(resultsRef); 
-          set(newResultRef, {
-              name: name,
-              score: score,
-              totalQuestions: totalQuestions,
-              timestamp: new Date().toISOString()
-          }).then(() => {
-              statusEl.textContent = "Results saved successfully!";
-              statusEl.style.color = "green";
-          }).catch(error => {
-              statusEl.textContent = "Could not save results: " + error.message;
-              statusEl.style.color = "red";
-              console.error("Firebase save error:", error);
-          });
-      }
-      
-      const adminResultsBody = document.getElementById('admin-results-body');
-      function loadAdminResults() {
-          const resultsRef = ref(database, 'quizResults');
-          const statusEl = document.getElementById('admin-status');
+    function shuffle(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
 
-          onValue(resultsRef, (snapshot) => {
-              adminResultsBody.innerHTML = '';
-              if (snapshot.exists()) {
-                  const data = snapshot.val();
-                  const resultsArray = Object.entries(data).sort((a, b) => new Date(b[1].timestamp) - new Date(a[1].timestamp));
+    function startQuiz() {
+        // Validate Name
+        const nameInput = document.getElementById('candidate-name');
+        if (!nameInput.value.trim()) {
+            alert("Please enter your full name to proceed.");
+            nameInput.focus();
+            return;
+        }
+        candidateName = nameInput.value.trim();
 
-                  resultsArray.forEach(([key, result]) => {
-                      const row = document.createElement('tr');
-                      row.innerHTML = `
-                          <td>${result.name}</td>
-                          <td>${result.score} / ${result.totalQuestions}</td>
-                          <td>${new Date(result.timestamp).toLocaleString()}</td>
-                          <td><button class="delete-btn" data-key="${key}">Delete</button></td>
-                      `;
-                      adminResultsBody.appendChild(row);
-                  });
-                  statusEl.textContent = `Displaying ${resultsArray.length} result(s). Data is live.`;
-              } else {
-                  statusEl.textContent = "No quiz results found in the database.";
-              }
-          }, (error) => {
-              statusEl.textContent = "Error loading results: " + error.message;
-              statusEl.style.color = "red";
-              console.error("Firebase load error:", error);
-          });
-      }
+        // Setup Quiz
+        shuffledQuestions = shuffle([...questionBank]); 
+        userSelections = new Array(shuffledQuestions.length).fill(null);
+        isQuizActive = true;
+        
+        // UI Switch
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        
+        // Enter Fullscreen (Optional attempt, improves focus)
+        try {
+            document.documentElement.requestFullscreen().catch((e) => {});
+        } catch(e) {}
 
-      adminResultsBody.addEventListener('click', (event) => {
-          if (event.target.classList.contains('delete-btn')) {
-              const keyToDelete = event.target.getAttribute('data-key');
-              if (confirm('Are you sure you want to delete this result?')) {
-                  const resultRef = ref(database, `quizResults/${keyToDelete}`);
-                  remove(resultRef)
-                      .then(() => { console.log("Result deleted successfully."); })
-                      .catch(error => { console.error("Error deleting result: ", error); });
-              }
-          }
-      });
+        loadQuestion();
+    }
 
-      showView('name-container');
-    </script>
+    // ---------------------------------------------------------
+    // ANTI-CHEAT / FOCUS LOGIC
+    // ---------------------------------------------------------
+    document.addEventListener("visibilitychange", () => {
+        if (!isQuizActive) return;
+
+        if (document.hidden) {
+            violationCount++;
+            const banner = document.getElementById('violation-msg');
+            
+            if (violationCount < 3) {
+                // Warning
+                banner.style.display = 'block';
+                banner.innerText = `⚠️ WARNING: Tab switch detected! (${violationCount}/3). Next: Auto-submit.`;
+                alert(`⚠️ FOCUS ALERT (${violationCount}/3)\n\nYou left the assessment window. If you do this 3 times, the quiz will automatically submit and end.`);
+            } else {
+                // Terminate
+                isQuizActive = false; // Stop further triggers
+                calculateScore(true); // true = forced finish
+            }
+        }
+    });
+
+    // Prevent accidental refresh
+    window.onbeforeunload = function() {
+        if (isQuizActive) {
+            return "Are you sure? You will lose all progress and cannot retake.";
+        }
+    };
+
+    // ---------------------------------------------------------
+    // QUIZ FUNCTIONS
+    // ---------------------------------------------------------
+    function loadQuestion() {
+        const data = shuffledQuestions[currentQuestionIndex];
+        const questionText = document.getElementById('question-text');
+        const scenarioBox = document.getElementById('scenario-box');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const catTag = document.getElementById('category-tag');
+
+        // Reset UI
+        optionsContainer.innerHTML = '';
+        nextBtn.classList.add('hidden');
+        
+        // Update Stats
+        document.getElementById('question-count').innerText = `Q ${currentQuestionIndex + 1}/${shuffledQuestions.length}`;
+        const pct = ((currentQuestionIndex) / shuffledQuestions.length) * 100;
+        document.getElementById('progress-bar').style.width = `${pct}%`;
+        
+        // Category Tag
+        catTag.innerText = data.cat || "General";
+
+        // Render Scenario
+        if(data.scenario) {
+            scenarioBox.innerText = data.scenario;
+            scenarioBox.style.display = 'block';
+        } else {
+            scenarioBox.style.display = 'none';
+        }
+
+        // Render Question
+        questionText.innerText = data.q;
+
+        // Render Options
+        data.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.classList.add('btn');
+            btn.innerText = opt;
+            btn.onclick = () => selectOption(index, btn);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function selectOption(selectedIndex, btnElement) {
+        const buttons = document.querySelectorAll('.options-grid .btn');
+        buttons.forEach(btn => btn.classList.remove('selected'));
+        btnElement.classList.add('selected');
+        
+        userSelections[currentQuestionIndex] = selectedIndex;
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < shuffledQuestions.length) {
+            loadQuestion();
+        } else {
+            calculateScore(false);
+        }
+    }
+
+    function calculateScore(forced = false) {
+        isQuizActive = false; // Disable anti-cheat triggers
+        score = 0;
+        const reviewContainer = document.getElementById('review-container');
+        reviewContainer.innerHTML = ''; 
+
+        shuffledQuestions.forEach((q, index) => {
+            const userChoice = userSelections[index];
+            const isCorrect = (userChoice === q.ans);
+            
+            if(isCorrect) score++;
+
+            // Review Item Construction
+            const item = document.createElement('div');
+            item.className = 'review-item';
+            
+            const userChoiceText = (userChoice !== null && userChoice !== undefined) ? q.options[userChoice] : "Unanswered";
+            const correctText = q.options[q.ans];
+            const resultClass = isCorrect ? 'review-correct' : 'review-wrong';
+
+            let html = `<div class="review-q">${index + 1}. ${q.q}</div>`;
+            if (q.scenario) html += `<div style="font-size:0.85rem; color:#4f46e5; margin-bottom:5px;"><em>${q.scenario}</em></div>`;
+            html += `<div class="review-ans">Your Answer: <span class="${resultClass}">${userChoiceText}</span></div>`;
+            if (!isCorrect) html += `<div class="review-ans">Correct Answer: <span class="review-correct">${correctText}</span></div>`;
+
+            item.innerHTML = html;
+            reviewContainer.appendChild(item);
+        });
+
+        showResults(forced);
+    }
+
+    function showResults(forced) {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('result-name').innerText = candidateName;
+
+        // Cheat Message
+        if (forced) {
+            const alertBox = document.getElementById('cheat-alert-box');
+            alertBox.classList.remove('hidden');
+            alertBox.classList.add('cheat-detected');
+            alertBox.innerHTML = `⚠️ Assessment Terminated Early.<br>We detected 3 instances of leaving the active window. The score has been finalized based on answered questions only.`;
+        }
+
+        const percentage = (score / shuffledQuestions.length) * 100;
+        let msg = "";
+        
+        if(percentage === 100) msg = "🦄 UNICORN STATUS! Perfect Score!";
+        else if(percentage >= 80) msg = "🚀 VC Material! Outstanding.";
+        else if(percentage >= 60) msg = "📈 Solid Entrepreneur. Good job.";
+        else if(percentage >= 40) msg = "🚧 Keep iterating. You'll get there.";
+        else msg = "📉 Pivot required. Study harder!";
+        
+        document.getElementById('message').innerText = msg;
+    }
+</script>
+
 </body>
 </html>
